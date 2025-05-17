@@ -11,33 +11,41 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            
-            Text("Carousels")
-                .font(.largeTitle.bold())
-                .padding(.horizontal)
-            
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    
-                    Text("Cover Carousel")
-                        .font(.title.bold())
-                        .padding(.horizontal)
-                    
-                    NavigationLink(destination: CoverCarousel()) {
-                        CoverCarouselWidget()
-                            .frame(height: 220)
-                            .cornerRadius(12)
-                            .padding()
-                            .shadow(radius: 5)
-                    }
-                    .background(.black)
-                    .clipShape(.rect(cornerRadius: 12))
-                    .padding(.horizontal)
-                }
+            VStack(spacing: 0) {
                 
+                HStack {
+                    Text("SwiftUI Carousels")
+                        .font(.largeTitle.bold())
+                        .padding(.bottom)
+                        .padding(.horizontal)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                ScrollView {
+                    VStack(alignment: .leading) {
+                        
+                        Text("Cover Carousel")
+                            .font(.title.bold())
+                            .padding(.horizontal)
+                            .padding(.top)
+                        
+                        NavigationLink(destination: CoverCarousel()) {
+                            CoverCarouselWidget()
+                                .frame(height: 220)
+                                .cornerRadius(12)
+                                .padding()
+                                .shadow(radius: 5)
+                        }
+                        .background(.black)
+                        .clipShape(.rect(cornerRadius: 12))
+                        .padding(.horizontal)
+                    }
+                    
+                }
+                .background(.gray.tertiary)
             }
-            .background(.gray.tertiary)
         }
+        .preferredColorScheme(.dark)
     }
 }
 
