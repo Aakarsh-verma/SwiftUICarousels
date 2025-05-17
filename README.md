@@ -51,3 +51,4 @@ Step-by-step guide on how to install and set up the project.
 
 1. Opacity control
 2. Scaling control
+3. Dynamic Ambient Background in Carousel. 
