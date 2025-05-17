@@ -12,7 +12,9 @@ Various SwiftUI Carousels Compiles in one project
 
 ## Previews
 
-<img src="Assets/coverFlow.png" alt="Home" width="200" height="450">
+<img src="Assets/home" alt="Home" width="200" height="450">
+<img src="Assets/cover" alt="cover" width="200" height="450">
+<img src="Assets/ambient" alt="ambient" width="200" height="450">
 
 ## Getting Started
 
