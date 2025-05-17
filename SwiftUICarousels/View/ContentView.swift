@@ -36,7 +36,6 @@ struct ContentView: View {
                                 .padding()
                                 .shadow(radius: 5)
                         }
-                        .background(.black)
                         .clipShape(.rect(cornerRadius: 12))
                         .padding(.horizontal)
                         
@@ -50,13 +49,12 @@ struct ContentView: View {
                                 .cornerRadius(12)
                                 .shadow(radius: 5)
                         }
-                        .background(.black)
                         .clipShape(.rect(cornerRadius: 12))
                         .padding(.horizontal)
                     }
                     
                 }
-                .background(.gray.tertiary)
+                .background(.black.gradient)
             }
         }
         .preferredColorScheme(.dark)

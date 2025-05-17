@@ -33,39 +33,8 @@ struct AmbientCarousel: View {
             topInset = max(newValue.contentInsets.top, 100) + 100
             scrollOffsetY = newValue.contentInsets.top + newValue.contentOffset.y
         })
+        .navigationTitle("Ambient Carousel")
         .preferredColorScheme(.dark)
-    }
-    
-    @ViewBuilder
-    func HeaderView() -> some View {
-        HStack {
-            Image(systemName: "xbox.logo")
-                .font(.system(size: 35))
-            
-            VStack(alignment: .leading, spacing: 6) {
-                Text("iPhoneUser")
-                    .font(.callout)
-                    .fontWeight(.semibold)
-                
-                HStack {
-                    Image(systemName: "g.circle.fill")
-                    
-                    Text("120")
-                        .font(.caption)
-                }
-            }
-            
-            Spacer(minLength: 0)
-            
-            Image(systemName: "square.and.arrow.up.circle.fill")
-                .font(.largeTitle)
-                .foregroundStyle(.white, .fill)
-            
-            Image(systemName: "bell.circle.fill")
-                .font(.largeTitle)
-                .foregroundStyle(.white, .fill)
-        }
-        .padding(.bottom)
     }
 }
 

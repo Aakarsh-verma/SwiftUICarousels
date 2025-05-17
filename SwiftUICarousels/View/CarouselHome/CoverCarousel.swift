@@ -13,6 +13,8 @@ struct CoverCarousel: View {
 
     var body: some View {
         VStack {
+            HeaderView()
+                .padding(.horizontal)
             CoverCarouselView(config: .init(hasOpacity: true, hasScale: true), data: images, selection: $activeID) { item in
                 Image(item.image)
                     .resizable()
