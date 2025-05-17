@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CustomCarouselView<Content: View, Data: RandomAccessCollection>: View where Data.Element: Identifiable {
+struct CoverCarouselView<Content: View, Data: RandomAccessCollection>: View where Data.Element: Identifiable {
     
     var config: Config
     var data: Data
@@ -71,5 +71,5 @@ struct CustomCarouselView<Content: View, Data: RandomAccessCollection>: View whe
 }
 
 #Preview {
-    ContentView()
+//    CoverCarouselWidget()
 }

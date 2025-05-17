@@ -2,34 +2,45 @@
 //  ContentView.swift
 //  SwiftUICarousels
 //
-//  Created by Aakarsh Verma on 04/05/25.
+//  Created by Aakarsh Verma on 17/05/25.
 //
 
 import SwiftUI
-import CoreData
 
 struct ContentView: View {
-    @State private var activeID: UUID?
-
+    
     var body: some View {
-        NavigationView {
-            VStack {
-                CustomCarouselView(config: .init(hasOpacity: true, hasScale: true), data: images, selection: $activeID) { item in
-                    Image(item.image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
+        NavigationStack {
+            
+            Text("Carousels")
+                .font(.largeTitle.bold())
+                .padding(.horizontal)
+            
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    
+                    Text("Cover Carousel")
+                        .font(.title.bold())
+                        .padding(.horizontal)
+                    
+                    NavigationLink(destination: CoverCarousel()) {
+                        CoverCarouselWidget()
+                            .frame(height: 220)
+                            .cornerRadius(12)
+                            .padding()
+                            .shadow(radius: 5)
+                    }
+                    .background(.black)
+                    .clipShape(.rect(cornerRadius: 12))
+                    .padding(.horizontal)
                 }
-                .frame(height: 240)
-                .padding(.vertical)
                 
-                Spacer()
             }
-            .navigationTitle("Cover Carousel")
+            .background(.gray.tertiary)
         }
-        .preferredColorScheme(.dark)
     }
 }
 
 #Preview {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    ContentView()
 }
