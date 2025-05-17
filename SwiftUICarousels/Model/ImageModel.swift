@@ -12,7 +12,7 @@ struct ImageModel: Identifiable {
     var image: String
 }
 
-var images: [ImageModel] = (1...8).compactMap { ImageModel(image: "m\($0)") }
+var images: [ImageModel] = (1...9).compactMap { ImageModel(image: "m\($0)") }
 
 struct Config {
     var hasOpacity: Bool = false

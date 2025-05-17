@@ -39,6 +39,20 @@ struct ContentView: View {
                         .background(.black)
                         .clipShape(.rect(cornerRadius: 12))
                         .padding(.horizontal)
+                        
+                        Text("Ambient Carousel")
+                            .font(.title.bold())
+                            .padding(.horizontal)
+                            .padding(.top)
+                        
+                        NavigationLink(destination: AmbientCarousel()) {
+                            AmbientCarouselWidget()                                .frame(height: 220)
+                                .cornerRadius(12)
+                                .shadow(radius: 5)
+                        }
+                        .background(.black)
+                        .clipShape(.rect(cornerRadius: 12))
+                        .padding(.horizontal)
                     }
                     
                 }
