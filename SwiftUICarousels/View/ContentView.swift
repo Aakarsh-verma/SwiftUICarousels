@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
-    
+    @State private var path = NavigationPath()
+
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             VStack(spacing: 0) {
                 
                 HStack {
@@ -29,32 +30,53 @@ struct ContentView: View {
                             .padding(.horizontal)
                             .padding(.top)
                         
-                        NavigationLink(destination: CoverCarousel()) {
-                            CoverCarouselWidget()
-                                .frame(height: 220)
-                                .cornerRadius(12)
-                                .padding()
-                                .shadow(radius: 5)
+                        VStack(alignment: .leading) {
+                            TapEffectView {
+                                path.append("cover")
+                            } content: {
+                                CoverCarouselWidget()
+                                    .frame(height: 220)
+                                    .cornerRadius(12)
+                                    .padding()
+                                    .shadow(radius: 5)
+                            }
+                            .clipShape(.rect(cornerRadius: 12))
+                            .padding(.horizontal)
                         }
-                        .clipShape(.rect(cornerRadius: 12))
-                        .padding(.horizontal)
                         
                         Text("Ambient Carousel")
                             .font(.title.bold())
                             .padding(.horizontal)
                             .padding(.top)
                         
-                        NavigationLink(destination: AmbientCarousel()) {
-                            AmbientCarouselWidget()                                .frame(height: 220)
-                                .cornerRadius(12)
-                                .shadow(radius: 5)
+                        VStack(alignment: .leading) {
+                            TapEffectView {
+                                path.append("ambient")
+                            } content: {
+                                AmbientCarouselWidget()
+                                    .frame(height: 220)
+                                    .cornerRadius(12)
+                                    .shadow(radius: 5)
+                            }
+                            .clipShape(.rect(cornerRadius: 12))
+                            .padding(.horizontal)
                         }
-                        .clipShape(.rect(cornerRadius: 12))
-                        .padding(.horizontal)
                     }
                     
                 }
                 .background(.black.gradient)
+            }
+            .navigationDestination(for: String.self) { route in
+                switch route {
+                case "cover":
+                    CoverCarousel()
+                    
+                case "ambient":
+                    AmbientCarousel()
+                    
+                default:
+                    EmptyView()
+                }
             }
         }
         .preferredColorScheme(.dark)
