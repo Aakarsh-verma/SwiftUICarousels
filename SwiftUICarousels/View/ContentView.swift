@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var path = NavigationPath()
-
+    
     var body: some View {
         NavigationStack(path: $path) {
             VStack(spacing: 0) {
@@ -31,16 +31,16 @@ struct ContentView: View {
                             .padding(.top)
                         
                         VStack(alignment: .leading) {
-                            TapEffectView {
+                            Button {
                                 path.append("cover")
-                            } content: {
+                            } label: {
                                 CoverCarouselWidget()
                                     .frame(height: 220)
                                     .cornerRadius(12)
                                     .padding()
                                     .shadow(radius: 5)
                             }
-                            .clipShape(.rect(cornerRadius: 12))
+                            .buttonStyle(ScaledButtonStyle())
                             .padding(.horizontal)
                         }
                         
@@ -50,14 +50,15 @@ struct ContentView: View {
                             .padding(.top)
                         
                         VStack(alignment: .leading) {
-                            TapEffectView {
+                            Button {
                                 path.append("ambient")
-                            } content: {
+                            } label: {
                                 AmbientCarouselWidget()
                                     .frame(height: 220)
                                     .cornerRadius(12)
                                     .shadow(radius: 5)
                             }
+                            .buttonStyle(ScaledButtonStyle())
                             .clipShape(.rect(cornerRadius: 12))
                             .padding(.horizontal)
                         }
@@ -67,19 +68,26 @@ struct ContentView: View {
                 .background(.black.gradient)
             }
             .navigationDestination(for: String.self) { route in
-                switch route {
-                case "cover":
-                    CoverCarousel()
-                    
-                case "ambient":
-                    AmbientCarousel()
-                    
-                default:
-                    EmptyView()
+                withAnimation(.interactiveSpring(response: 0.2, dampingFraction: 0.7, blendDuration: 0.7)) {
+                    performNavigation(route)
                 }
             }
         }
         .preferredColorScheme(.dark)
+    }
+    
+    @ViewBuilder
+    fileprivate func performNavigation(_ route: String) -> some View {
+        switch route {
+        case "cover":
+            CoverCarousel()
+            
+        case "ambient":
+            AmbientCarousel()
+            
+        default:
+            EmptyView()
+        }
     }
 }
 
