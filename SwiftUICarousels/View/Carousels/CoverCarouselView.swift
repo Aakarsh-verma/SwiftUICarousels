@@ -71,5 +71,5 @@ struct CoverCarouselView<Content: View, Data: RandomAccessCollection>: View wher
 }
 
 #Preview {
-//    CoverCarouselWidget()
+    CoverCarousel()
 }
