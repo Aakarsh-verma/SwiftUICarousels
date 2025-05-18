@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var viewModel = HomeViewModel()
     @State private var path = NavigationPath()
     
     var body: some View {
@@ -24,65 +25,14 @@ struct ContentView: View {
 
                 ScrollView {
                     VStack(alignment: .leading) {
-                        
-                        Text("Cover Carousel")
-                            .font(.title.bold())
-                            .padding(.horizontal)
-                            .padding(.top)
-                        
-                        VStack(alignment: .leading) {
-                            Button {
-                                path.append("cover")
-                            } label: {
-                                CoverCarouselWidget()
-                                    .frame(height: 220)
-                                    .cornerRadius(12)
-                                    .padding()
-                                    .shadow(radius: 5)
-                            }
-                            .buttonStyle(ScaledButtonStyle())
-                            .padding(.horizontal)
-                        }
-                        
-                        Text("Parallax Carousel")
-                            .font(.title.bold())
-                            .padding(.horizontal)
-                            .padding(.top)
-                        
-                        VStack(alignment: .leading) {
-                            Button {
-                                path.append("parallax")
-                            } label: {
-                                ParallaxCarouselWidget()
-                                    .frame(height: 220)
-                                    .cornerRadius(12)
-                                    .shadow(radius: 5)
-                            }
-                            .buttonStyle(ScaledButtonStyle())
-                            .clipShape(.rect(cornerRadius: 12))
-                            .padding(.horizontal)
-                        }
-                        
-                        Text("Ambient Carousel")
-                            .font(.title.bold())
-                            .padding(.horizontal)
-                            .padding(.top)
-                        
-                        VStack(alignment: .leading) {
-                            Button {
-                                path.append("ambient")
-                            } label: {
-                                AmbientCarouselWidget()
-                                    .frame(height: 220)
-                                    .cornerRadius(12)
-                                    .shadow(radius: 5)
-                            }
-                            .buttonStyle(ScaledButtonStyle())
-                            .clipShape(.rect(cornerRadius: 12))
-                            .padding(.horizontal)
+                        ForEach(viewModel.homeWidgets) { widget in
+                            HomeWidgetView(
+                                viewType: widget.viewType,
+                                title: widget.title,
+                                path: $path
+                            )
                         }
                     }
-                    
                 }
                 .background(.black.gradient.secondary)
             }
