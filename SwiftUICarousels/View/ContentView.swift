@@ -38,28 +38,11 @@ struct ContentView: View {
             }
             .navigationDestination(for: String.self) { route in
                 withAnimation(.interactiveSpring(response: 0.2, dampingFraction: 0.7, blendDuration: 0.7)) {
-                    performNavigation(route)
+                    DeeplinkHandler.shared.performNavigation(route)
                 }
             }
         }
         .preferredColorScheme(.dark)
-    }
-    
-    @ViewBuilder
-    fileprivate func performNavigation(_ route: String) -> some View {
-        switch route {
-        case "cover":
-            CoverCarousel()
-            
-        case "ambient":
-            AmbientCarousel()
-            
-        case "parallax":
-            ParallaxCarousel()
-            
-        default:
-            EmptyView()
-        }
     }
 }
 
