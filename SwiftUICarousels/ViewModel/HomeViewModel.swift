@@ -13,4 +13,21 @@ class HomeViewModel: ObservableObject {
         .init(title: "Parallax Carousel", viewType: .parallax),
         .init(title: "Ambient Carousel", viewType: .ambient)
     ]
+    
+    @Published var animes: [AnimeData] = []
+    
+    private let service: NetworkService
+    
+    init(service: NetworkService = APIService()) {
+        self.service = service
+    }
+    
+    func fetchAnimeContent() async {
+        do {
+            let response: AnimeResponseModel = try await service.request(.spring)
+            self.animes = response.data ?? []
+        } catch {
+            print("API Error:", error)
+        }
+    }
 }
