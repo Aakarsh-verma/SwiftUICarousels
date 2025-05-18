@@ -16,6 +16,7 @@ Various SwiftUI Carousels Compiles in one project
   <img src="Assets/home.png" alt="Home" width="200" height="450" style="margin-right: 10px;">
   <img src="Assets/cover.png" alt="Cover" width="200" height="450" style="margin-right: 10px;">
   <img src="Assets/ambient.png" alt="Ambient" width="200" height="450">
+  <img src="Assets/parallax.png" alt="Ambient" width="200" height="450">
 </p>
 
 

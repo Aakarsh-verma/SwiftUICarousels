@@ -44,6 +44,25 @@ struct ContentView: View {
                             .padding(.horizontal)
                         }
                         
+                        Text("Parallax Carousel")
+                            .font(.title.bold())
+                            .padding(.horizontal)
+                            .padding(.top)
+                        
+                        VStack(alignment: .leading) {
+                            Button {
+                                path.append("parallax")
+                            } label: {
+                                ParallaxCarouselWidget()
+                                    .frame(height: 220)
+                                    .cornerRadius(12)
+                                    .shadow(radius: 5)
+                            }
+                            .buttonStyle(ScaledButtonStyle())
+                            .clipShape(.rect(cornerRadius: 12))
+                            .padding(.horizontal)
+                        }
+                        
                         Text("Ambient Carousel")
                             .font(.title.bold())
                             .padding(.horizontal)
@@ -65,7 +84,7 @@ struct ContentView: View {
                     }
                     
                 }
-                .background(.black.gradient)
+                .background(.black.gradient.secondary)
             }
             .navigationDestination(for: String.self) { route in
                 withAnimation(.interactiveSpring(response: 0.2, dampingFraction: 0.7, blendDuration: 0.7)) {
@@ -84,6 +103,9 @@ struct ContentView: View {
             
         case "ambient":
             AmbientCarousel()
+            
+        case "parallax":
+            ParallaxCarousel()
             
         default:
             EmptyView()

@@ -25,6 +25,7 @@ struct ParallaxCarousel: View {
             }
             .padding(15)
         }
+        .navigationTitle("Parallax Carousel")
         .preferredColorScheme(.dark)
     }
 }
