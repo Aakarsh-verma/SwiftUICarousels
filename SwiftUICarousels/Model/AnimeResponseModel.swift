@@ -17,7 +17,7 @@ struct AnimeResponseModel: Codable {
 struct AnimeData: Codable {
     var malID: Int?
     var url: String?
-    var images: [String: Image]?
+    var images: [String: AnimeImage]?
     var trailer: Trailer?
     var approved: Bool?
     var titles: [Title]?
@@ -93,7 +93,7 @@ enum TypeEnum: String, Codable {
 }
 
 // MARK: - Image
-struct Image: Codable {
+struct AnimeImage: Codable {
     var imageURL, smallImageURL, largeImageURL: String?
 
     enum CodingKeys: String, CodingKey {

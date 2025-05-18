@@ -25,6 +25,4 @@ class APIService: NetworkService {
             throw error
         }
     }
-    
-    
 }
