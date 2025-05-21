@@ -16,7 +16,7 @@ struct CoverCarousel: View {
             HeaderView()
                 .padding(.horizontal)
             
-            CoverCarouselView(config: .init(hasOpacity: true, hasScale: true), data: images, selection: $activeID) { item in
+            CoverCarouselView(config: .init(hasOpacity: true, hasScale: true), data: sampleImages, selection: $activeID) { item in
                 Image(item.image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)

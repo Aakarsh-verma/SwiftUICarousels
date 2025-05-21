@@ -10,13 +10,14 @@ import SwiftUI
 struct AmbientCarousel: View {
     @State var topInset: CGFloat = 0
     @State var scrollOffsetY: CGFloat = 0
+    @StateObject var viewModel = HomeViewModel()
     
     var body: some View {
         ScrollView(.vertical) {
             LazyVStack(spacing: 15) {
                 HeaderView()
                 
-                AmbientCarouselView(topInset: $topInset, scrollOffsetY: $scrollOffsetY)
+                AmbientCarouselView(topInset: $topInset, scrollOffsetY: $scrollOffsetY, images: $viewModel.animeImages)
                     .zIndex(-1)
             }
         }
@@ -35,9 +36,13 @@ struct AmbientCarousel: View {
         })
         .navigationTitle("Ambient Carousel")
         .preferredColorScheme(.dark)
+        .task {
+            await viewModel.fetchAnimeContent()
+        }
     }
 }
 
 #Preview {
     AmbientCarousel()
+        .environmentObject(HomeViewModel())
 }

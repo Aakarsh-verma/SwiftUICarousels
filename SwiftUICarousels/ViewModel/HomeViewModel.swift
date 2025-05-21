@@ -14,7 +14,7 @@ class HomeViewModel: ObservableObject {
         .init(title: "Ambient Carousel", viewType: .ambient)
     ]
     
-    @Published var animes: [AnimeData] = []
+    @Published var animeImages: [ImageModel] = []
     
     private let service: NetworkService
     
@@ -22,10 +22,12 @@ class HomeViewModel: ObservableObject {
         self.service = service
     }
     
+    @MainActor
     func fetchAnimeContent() async {
         do {
             let response: AnimeResponseModel = try await service.request(.spring)
-            self.animes = response.data ?? []
+            let animes = response.data ?? []
+            self.animeImages = animes.map { ImageModel(image: ($0.images?["jpg"]?.imageURL ?? "")) }
         } catch {
             print("API Error:", error)
         }

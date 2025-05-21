@@ -7,12 +7,30 @@
 
 import SwiftUI
 
+
+struct CustomImageModel: Identifiable {
+    let id: UUID = UUID()
+    var image: String
+    
+    var isRemoteImage: Bool {
+        return image.hasPrefix("http") || image.hasPrefix("https")
+    }
+    
+    var isAssetImage: Bool {
+        return UIImage(named: image) != nil
+    }
+    
+    init(for image: String) {
+        self.image = image
+    }
+}
+
 struct ImageModel: Identifiable {
     var id: UUID = UUID()
     var image: String
 }
 
-var images: [ImageModel] = (1...9).compactMap { ImageModel(image: "m\($0)") }
+var sampleImages: [ImageModel] = (1...9).compactMap { ImageModel(image: "m\($0)") }
 
 struct Config {
     var hasOpacity: Bool = false

@@ -11,7 +11,7 @@ struct AmbientCarouselView: View {
     @Binding var topInset: CGFloat
     @Binding var scrollOffsetY: CGFloat
     @State var scrollProgresX: CGFloat = 0
-    
+    @Binding var images: [ImageModel]
     var body: some View {
         CarouselView()
     }
@@ -23,8 +23,7 @@ struct AmbientCarouselView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: spacing) {
                 ForEach(images) { model in
-                    Image(model.image)
-                        .resizable()
+                    CustomImageView(imageModel: CustomImageModel(for: model.image))
                         .aspectRatio(contentMode: .fill)
                         .containerRelativeFrame(.horizontal)
                         .frame(height: 380)
@@ -57,8 +56,7 @@ struct AmbientCarouselView: View {
             ZStack {
                 ForEach(images.reversed()) { model in
                     let index = CGFloat(images.firstIndex(where: { $0.id == model.id }) ?? 0) + 1
-                    Image(model.image)
-                        .resizable()
+                    CustomImageView(imageModel: CustomImageModel(for: model.image))
                         .aspectRatio(contentMode: .fill)
                         .frame(width: size.width, height: size.height)
                         .clipped()
@@ -91,6 +89,6 @@ struct AmbientCarouselView: View {
 }
 
 #Preview {
-    AmbientCarouselView(topInset: .constant(100), scrollOffsetY: .constant(0))
+    AmbientCarouselView(topInset: .constant(100), scrollOffsetY: .constant(0), images: .constant(sampleImages))
         .preferredColorScheme(.dark)
 }
