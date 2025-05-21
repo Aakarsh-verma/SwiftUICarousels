@@ -26,14 +26,14 @@ struct AmbientCarouselView: View {
                     CustomImageView(imageModel: CustomImageModel(for: model.image))
                         .aspectRatio(contentMode: .fill)
                         .containerRelativeFrame(.horizontal)
-                        .frame(height: 380)
+                        .frame(height: 500)
                         .clipShape(.rect(cornerRadius: 12))
                         .shadow(color: .black.opacity(0.4), radius: 5, x: 5, y: 5)
                 }
             }
             .scrollTargetLayout()
         }
-        .frame(height: 380)
+        .frame(height: 500)
         .background(BackDropCarouselView())
         .scrollTargetBehavior(.viewAligned(limitBehavior: .always))
         .onScrollGeometryChange(for: CGFloat.self) {
