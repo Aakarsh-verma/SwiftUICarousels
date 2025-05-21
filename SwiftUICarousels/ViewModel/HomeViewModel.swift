@@ -17,15 +17,17 @@ class HomeViewModel: ObservableObject {
     @Published var animeImages: [ImageModel] = []
     
     private let service: NetworkService
+    private let contentType: APIRouter
     
-    init(service: NetworkService = APIService()) {
+    init(service: NetworkService = APIService(), contentType: APIRouter = .season((year: "2014", season: .spring))) {
         self.service = service
+        self.contentType = contentType
     }
     
     @MainActor
     func fetchAnimeContent() async {
         do {
-            let response: AnimeResponseModel = try await service.request(.spring)
+            let response: AnimeResponseModel = try await service.request(contentType)
             let animes = response.data ?? []
             self.animeImages = animes.map { ImageModel(image: ($0.images?["jpg"]?.imageURL ?? "")) }
         } catch {

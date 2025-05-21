@@ -7,15 +7,25 @@
 
 import SwiftUI
 
-
-public enum APIRouter {
+enum AnimeSeason: String {
     case spring
-    case none
+    case summer
+    case autumn
+    case winter
+}
+
+typealias AnimeSeasonContext = (year: String, season: AnimeSeason)
+
+enum APIRouter {
+    case seasonNow
+    case season(AnimeSeasonContext)
+    case top
+    case recommendation
 }
 
 extension APIRouter {
     var baseURL: String {
-        return "https://api.jikan.moe/v4/seasons/2014/"
+        return "https://api.jikan.moe/v4/"
     }
     
     var headers: [String: String] {
@@ -24,10 +34,14 @@ extension APIRouter {
     
     var path: String {
         switch self {
-        case .spring:
-            return "spring?sfw&limit=10"
-        case .none:
-            return ""
+        case .seasonNow:
+            return "seasons/now"
+        case .season(let context):
+            return "seasons/\(context.year)/\(context.season.rawValue)"
+        case .top:
+            return "top/anime"
+        case .recommendation:
+            return "recommendations/anime"
         }
     }
     
