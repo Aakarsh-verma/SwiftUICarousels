@@ -8,6 +8,14 @@
 import SwiftUI
 
 struct HeaderView: View {
+    let title: String
+    let subtitle: String
+    
+    init(title: String = "iPhoneUser", subtitle: String = "") {
+        self.title = title
+        self.subtitle = subtitle
+    }
+    
     var body: some View {
         headerView()
     }
@@ -15,18 +23,18 @@ struct HeaderView: View {
     @ViewBuilder
     func headerView() -> some View {
         HStack {
-            Image(systemName: "xbox.logo")
+            Image(systemName: "apple.meditate.circle.fill")
                 .font(.system(size: 35))
             
             VStack(alignment: .leading, spacing: 6) {
-                Text("iPhoneUser")
+                Text(self.title)
                     .font(.callout)
                     .fontWeight(.semibold)
                 
                 HStack {
-                    Image(systemName: "g.circle.fill")
+                    Image(systemName: "y.circle.fill")
                     
-                    Text("120")
+                    Text(subtitle)
                         .font(.caption)
                 }
             }

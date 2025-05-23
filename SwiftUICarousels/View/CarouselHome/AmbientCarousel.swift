@@ -10,12 +10,12 @@ import SwiftUI
 struct AmbientCarousel: View {
     @State var topInset: CGFloat = 0
     @State var scrollOffsetY: CGFloat = 0
-    @StateObject var viewModel = HomeViewModel()
+    @StateObject var viewModel = HomeViewModel(contentType: .season((year: "2015", season: .spring)))
     
     var body: some View {
         ScrollView(.vertical) {
             LazyVStack(spacing: 15) {
-                HeaderView()
+                HeaderView(title: "Spring", subtitle: "2015")
                 
                 AmbientCarouselView(topInset: $topInset, scrollOffsetY: $scrollOffsetY, images: $viewModel.animeImages)
                     .zIndex(-1)
