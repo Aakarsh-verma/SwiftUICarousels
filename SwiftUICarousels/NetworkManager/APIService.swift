@@ -8,21 +8,43 @@
 import SwiftUI
 
 class APIService: NetworkService {
-    func request<T>(_ router: APIRouter) async throws -> T where T : Decodable {
+    func request<T: Decodable>(_ router: APIRouter) async throws -> T {
         let request = try router.asURLRequest()
         
+        let (data, response): (Data, URLResponse)
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-            
-            guard let httpResponse = response as? HTTPURLResponse, (200..<300).contains(httpResponse.statusCode) else {
-                throw URLError(.badServerResponse)
-            }
-            
-            let decodedData = try JSONDecoder().decode(T.self, from: data)
-            return decodedData
+            (data, response) = try await URLSession.shared.data(for: request)
         } catch {
-            print("Error: \(error)")
-            throw error
+            if let urlError = error as? URLError {
+                throw NetworkError.urlError(urlError)
+            } else {
+                throw error
+            }
+        }
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NetworkError.unknown(statusCode: -1)
+        }
+
+        return try parseAPIResponse(data, httpResponse: httpResponse)
+    }
+    
+    private func parseAPIResponse<T: Decodable>(_ data: Data, httpResponse: HTTPURLResponse) throws -> T {
+        switch httpResponse.statusCode {
+        case 200..<300:
+            do {
+                return try JSONDecoder().decode(T.self, from: data)
+            } catch {
+                throw NetworkError.decodingError
+            }
+
+        default:
+            if let apiError = try? JSONDecoder().decode(NetworkErrorResponse.self, from: data) {
+                throw NetworkError.apiError(apiError)
+            } else {
+                throw NetworkError.unknown(statusCode: httpResponse.statusCode)
+            }
         }
     }
 }
+
