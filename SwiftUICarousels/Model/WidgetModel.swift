@@ -18,6 +18,7 @@ enum CarouselViewType: String {
     case cover
     case ambient
     case parallax
+    case stack
 }
 
 extension CarouselViewType {
@@ -30,6 +31,8 @@ extension CarouselViewType {
             AmbientCarouselWidget()
         case .parallax:
             ParallaxCarouselWidget()
+        case .stack:
+            StackCarouselWidget()
         }
     }
 }

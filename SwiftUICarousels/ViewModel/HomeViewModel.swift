@@ -10,6 +10,7 @@ import SwiftUI
 class HomeViewModel: ObservableObject {
     @Published var homeWidgets: [CarouselWidgetModel] = [
         .init(title: "Cover Carousel", viewType: .cover),
+        .init(title: "Stack Carousel", viewType: .stack),
         .init(title: "Parallax Carousel", viewType: .parallax),
         .init(title: "Ambient Carousel", viewType: .ambient)
     ]

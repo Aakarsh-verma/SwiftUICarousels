@@ -10,6 +10,7 @@ import SwiftUI
 struct ParallaxCarouselWidget: View {
     var body: some View {
         ParallaxCarouselView()
+            .frame(height: 240)
     }
 }
 

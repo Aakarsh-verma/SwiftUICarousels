@@ -12,6 +12,7 @@ enum CarouselPageEnum: String {
     case cover
     case ambient
     case parallax
+    case stack
 }
 
 class NavigationHandler {
@@ -29,6 +30,7 @@ class NavigationHandler {
         case .cover: CoverCarousel()
         case .ambient: AmbientCarousel()
         case .parallax: ParallaxCarousel()
+        case .stack: StackCarousel()
         default: ContentView()
         }
     }

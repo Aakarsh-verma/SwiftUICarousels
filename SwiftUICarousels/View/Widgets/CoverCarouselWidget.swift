@@ -16,6 +16,7 @@ struct CoverCarouselWidget: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
         }
+        .frame(height: 240)
     }
 }
 

@@ -23,7 +23,6 @@ struct HomeWidgetView: View {
                 path.append(viewType.rawValue)
             } label: {
                 viewType.widgetView()
-                    .frame(height: 220)
                     .cornerRadius(12)
                     .shadow(radius: 5)
             }

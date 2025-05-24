@@ -10,6 +10,7 @@ import SwiftUI
 struct AmbientCarouselWidget: View {
     var body: some View {
         AmbientCarouselView(topInset: .constant(40), scrollOffsetY: .constant(0), images: .constant(sampleImages))
+            .frame(height: 240)
             .padding(40)
     }
 }
