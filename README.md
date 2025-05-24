@@ -9,6 +9,7 @@ A curated collection of beautifully crafted **SwiftUI carousel layouts** — all
 - [📸 Previews](#-previews)
 - [🚀 Getting Started](#-getting-started)
   - [⚙️ Prerequisites](#️-prerequisites)
+  - [📦 Dependencies](#️-dependencies)
   - [📥 Check it out yourself](#-check-it-out-yourself)
 - [✨ Features](#-features)
 - [🙏 Acknowledgements](#-acknowledgements)
