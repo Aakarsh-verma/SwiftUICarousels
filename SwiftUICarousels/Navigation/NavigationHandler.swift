@@ -1,5 +1,5 @@
 //
-//  DeeplinkHandler.swift
+//  NavigationHandler.swift
 //  SwiftUICarousels
 //
 //  Created by Aakarsh Verma on 18/05/25.
@@ -7,24 +7,24 @@
 
 import SwiftUI
 
-enum CarouselDeeplinkEnum: String {
+enum CarouselPageEnum: String {
     case home
     case cover
     case ambient
     case parallax
 }
 
-class DeeplinkHandler {
-    static let shared = DeeplinkHandler()
+class NavigationHandler {
+    static let shared = NavigationHandler()
     
     @ViewBuilder
     func performNavigation(_ route: String) -> some View {
-        let destination = CarouselDeeplinkEnum(rawValue: route) ?? .home
+        let destination = CarouselPageEnum(rawValue: route) ?? .home
         navigate(to: destination)
     }
     
     @ViewBuilder
-    func navigate(to destination: CarouselDeeplinkEnum) -> some View {
+    func navigate(to destination: CarouselPageEnum) -> some View {
         switch destination {
         case .cover: CoverCarousel()
         case .ambient: AmbientCarousel()

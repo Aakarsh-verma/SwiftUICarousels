@@ -38,7 +38,7 @@ struct ContentView: View {
             }
             .navigationDestination(for: String.self) { route in
                 withAnimation(.interactiveSpring(response: 0.2, dampingFraction: 0.7, blendDuration: 0.7)) {
-                    DeeplinkHandler.shared.performNavigation(route)
+                    NavigationHandler.shared.performNavigation(route)
                 }
             }
         }
