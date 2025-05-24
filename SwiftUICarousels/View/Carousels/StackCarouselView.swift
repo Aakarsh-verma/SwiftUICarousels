@@ -59,7 +59,7 @@ struct StackCarouselView<Data: RandomAccessCollection, Content: View>: View wher
     }
     
     private func scrollEffect(_ value: DragGesture.Value) {
-        let threshold: CGFloat = 50
+        let threshold: CGFloat = 25
         if value.translation.width < -threshold && currentIndex < items.count - 1 {
             currentIndex += 1
         } else if value.translation.width > threshold && currentIndex > 0 {
