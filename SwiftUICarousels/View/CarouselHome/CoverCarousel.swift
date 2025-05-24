@@ -10,15 +10,15 @@ import SwiftUI
 
 struct CoverCarousel: View {
     @State private var activeID: UUID?
+    @StateObject var viewModel = HomeViewModel(contentType: .season((year: "2020", season: .winter)))
 
     var body: some View {
         VStack {
             HeaderView()
                 .padding(.horizontal)
             
-            CoverCarouselView(config: .init(hasOpacity: true, hasScale: true), data: sampleImages, selection: $activeID) { item in
-                Image(item.image)
-                    .resizable()
+            CoverCarouselView(config: .init(hasOpacity: true, hasScale: true), data: viewModel.animeImages, selection: $activeID) { item in
+                CustomImageView(imageModel: CustomImageModel(for: item.image))
                     .aspectRatio(contentMode: .fill)
             }
             .frame(height: 240)
@@ -28,6 +28,9 @@ struct CoverCarousel: View {
         }
         .navigationTitle("Cover Carousel")
         .preferredColorScheme(.dark)
+        .task {
+            await viewModel.fetchAnimeContent()
+        }
     }
 }
 
