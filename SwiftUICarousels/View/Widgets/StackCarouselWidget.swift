@@ -16,7 +16,7 @@ struct StackCarouselWidget: View {
                 .scaledToFit()
                 .clipShape(.rect(cornerRadius: 20))
         }
-        .frame(height: 300)
+        .frame(height: 240)
     }
 }
 
