@@ -17,18 +17,19 @@ struct SearchHeaderView: View {
     @ViewBuilder
     func searchHeaderView() -> some View {
         HStack(spacing: 12) {
-            Button {
-                //
-            } label: {
-                Image(systemName: "line.3.horizontal")
-                    .font(.title)
-                    .foregroundStyle(.blue)
-            }
             HStack(spacing: 12) {
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(.gray)
                 
                 TextField("Search", text: $searchText)
+                
+                Button {
+                    //
+                } label: {
+                    Image(systemName: "slider.horizontal.3")
+                        .font(.title2)
+                        .foregroundStyle(.gray)
+                }
             }
             .padding(.horizontal, 15)
             .padding(.vertical, 10)
