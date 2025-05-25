@@ -15,6 +15,10 @@ class HomeViewModel: ObservableObject {
         .init(title: "Ambient Carousel", viewType: .ambient)
     ]
     
+    @Published var dashboardWidgets: [CarouselWidgetModel] = [
+        .init(title: "Stack Carousel", viewType: .stack),
+    ]
+    
     @Published var animeImages: [ImageModel] = []
     
     private let service: NetworkService

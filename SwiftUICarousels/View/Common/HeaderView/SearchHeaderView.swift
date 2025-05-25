@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SearchHeaderView: View {
     @Binding var searchText: String
-    
+    var searchForeground: Material = .ultraThinMaterial
     var body: some View {
         searchHeaderView()
     }
@@ -33,7 +33,7 @@ struct SearchHeaderView: View {
             }
             .padding(.horizontal, 15)
             .padding(.vertical, 10)
-            .background(.ultraThinMaterial, in: .capsule)
+            .background(searchForeground, in: .capsule)
         }
         
     }
