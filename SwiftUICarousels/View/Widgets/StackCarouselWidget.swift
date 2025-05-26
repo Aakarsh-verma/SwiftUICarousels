@@ -9,9 +9,10 @@ import SwiftUI
 
 struct StackCarouselWidget: View {
     @State private var currentIndex = 0
+    @EnvironmentObject private var viewModel: HomeViewModel
     
     var body: some View {
-        StackCarouselView(items: sampleImages, currentIndex: $currentIndex) { imageModel in
+        StackCarouselView(items: viewModel.animeImages.isEmpty ? sampleImages : viewModel.animeImages, currentIndex: $currentIndex) { imageModel in
             CustomImageView(imageModel: CustomImageModel(for: imageModel.image))
                 .scaledToFit()
                 .clipShape(.rect(cornerRadius: 20))
@@ -22,4 +23,5 @@ struct StackCarouselWidget: View {
 
 #Preview {
     StackCarouselWidget()
+        .environmentObject(HomeViewModel())
 }

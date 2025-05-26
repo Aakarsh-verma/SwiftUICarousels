@@ -31,10 +31,10 @@ struct ContentView: View {
                                 title: widget.title,
                                 path: $path
                             )
+                            .environmentObject(viewModel)
                         }
                     }
                 }
-                .background(.black.gradient.secondary)
             }
             .navigationDestination(for: String.self) { route in
                 withAnimation(.interactiveSpring(response: 0.2, dampingFraction: 0.7, blendDuration: 0.7)) {
@@ -42,6 +42,7 @@ struct ContentView: View {
                 }
             }
         }
+        .background(.gray.quaternary)
         .preferredColorScheme(.dark)
     }
 }

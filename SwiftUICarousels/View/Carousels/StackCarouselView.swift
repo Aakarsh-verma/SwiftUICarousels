@@ -25,7 +25,7 @@ struct StackCarouselView<Data: RandomAccessCollection, Content: View>: View wher
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .gesture(
-                DragGesture()
+                DragGesture(minimumDistance: 20, coordinateSpace: .local)
                     .onEnded { value in
                         scrollEffect(value)
                     }

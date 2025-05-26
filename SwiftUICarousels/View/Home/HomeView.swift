@@ -25,12 +25,17 @@ struct HomeView: View {
                             title: widget.title,
                             path: $path
                         )
+                        .environmentObject(viewModel)
                     }
                 }
             }
         }
         .background(.gray.quaternary)
         .frame(maxHeight: .infinity)
+        .preferredColorScheme(.dark)
+        .task {
+            await viewModel.fetchAnimeContent()
+        }
     }
 }
 
