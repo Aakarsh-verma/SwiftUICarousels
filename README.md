@@ -50,11 +50,7 @@ Step-by-step guide on how to install and set up the project.
    git clone https://github.com/Aakarsh-verma/SwiftUICarousels.git
    ```
 
-2. Navigate to the project directory within terminal
-
-   ```bash
-   cd path/to/SwiftUICarousels
-   ```
+2. Open the project directory
 
 4. Open `SwiftUICarousels.xcodeproj` in **xcode** and run the project
 
