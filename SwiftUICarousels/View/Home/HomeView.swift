@@ -20,14 +20,10 @@ struct HomeView: View {
             ScrollView {
                 VStack(alignment: .leading) {
                     ForEach(viewModel.dashboardWidgets) { widget in
-                        HomeWidgetView(
-                            viewType: widget.viewType,
-                            title: widget.title,
-                            path: $path
-                        )
-                        .environmentObject(viewModel)
+                        HomeWidgetView(item: widget, path: $path)
                     }
                 }
+                .environmentObject(viewModel)
             }
         }
         .background(.gray.quaternary)
