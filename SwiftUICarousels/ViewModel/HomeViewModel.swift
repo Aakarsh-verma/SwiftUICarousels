@@ -52,7 +52,8 @@ class HomeViewModel: ObservableObject {
                              season: season,
                              title: anime.titleEnglish ?? anime.title ?? anime.titleJapanese ?? "",
                              rating: rating,
-                             review: review)
+                             review: review,
+                             description: anime.synopsis ?? "")
         }
     }
 }

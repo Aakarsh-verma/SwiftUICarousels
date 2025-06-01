@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct AnimeDetailView: View {
-    var content: CardModel
     @Environment(\.dismiss) private var dismiss
+    @State private var fullDescription: Bool = false
+    var content: CardModel
 
     var body: some View {
         VStack {
@@ -25,57 +26,13 @@ struct AnimeDetailView: View {
                 }
                 .padding(.horizontal)
                 
-                VStack(alignment: .leading) {
-                    HStack(alignment: .top) {
-                        Text(content.title)
-                            .font(.title.bold())
-                            .foregroundStyle(.black)
-                        
-                        Spacer()
-                        
-                        RatingCapsule(rating: content.rating, color: .black, borderColor: .gray)
-                    }
-                    .padding(.horizontal)
-                    
-                    HStack(alignment: .top) {
-                        Text(content.season)
-                            .font(.system(size: UIFont.preferredFont(forTextStyle: .subheadline).pointSize))
-                            .foregroundStyle(.black)
-
-                        Spacer()
-                        
-                        Text("\(content.review) reviews")
-                            .font(.system(size: UIFont.preferredFont(forTextStyle: .caption1).pointSize * 1.3))
-                            .foregroundStyle(.gray)
-                            .underline()
-                    }
-                    .padding(.horizontal)
-                    
-                    VStack(alignment: .leading) {
-                        Text(content.description)
-                            .font(.subheadline)
-                            .foregroundStyle(.gray)
-
-                        Text("Read more")
-                            .font(.subheadline)
-                            .underline()
-                            .foregroundStyle(.black)
-                            .padding(.top, 2)
-                    }
-                    .padding(.horizontal)
-                    .padding(.top)
-                    
-                    Spacer()
-                }
-                .padding(.top)
-                .background(.white)
-                .clipShape(.rect(cornerRadius: 20))
-                .offset(y: 200)
+                ContentView()
             }
             Spacer()
         }
         .navigationTitle("")
         .navigationBarBackButtonHidden(true)
+        .preferredColorScheme(.dark)
     }
     
     @ViewBuilder
@@ -93,6 +50,66 @@ struct AnimeDetailView: View {
                 )
         }
 
+    }
+    
+    @ViewBuilder
+    private func ContentView() -> some View {
+        ScrollView(showsIndicators: false) {
+            VStack(alignment: .leading) {
+                HStack(alignment: .top) {
+                    Text(content.title)
+                        .font(.title.bold())
+                    
+                    Spacer()
+                    
+                    RatingCapsule(rating: content.rating, borderColor: .gray)
+                }
+                .padding(.horizontal)
+                
+                HStack(alignment: .top) {
+                    Text(content.season)
+                        .font(.system(size: UIFont.preferredFont(forTextStyle: .subheadline).pointSize))
+                    
+                    Spacer()
+                    
+                    Text("\(content.review) reviews")
+                        .font(.system(size: UIFont.preferredFont(forTextStyle: .caption1).pointSize * 1.3))
+                        .foregroundStyle(.gray)
+                        .underline()
+                }
+                .padding(.horizontal)
+                
+                VStack(alignment: .leading) {
+                    Text(content.description)
+                        .font(.subheadline)
+                        .lineLimit(fullDescription ? nil : 2)
+                        .truncationMode(.tail)
+                        .foregroundStyle(.gray)
+                    
+                    Text(fullDescription ? "Read less" : "Read more")
+                        .font(.subheadline)
+                        .underline()
+                        .padding(.top, 2)
+                        .onTapGesture {
+                            withAnimation(.easeInOut) {
+                                fullDescription.toggle()
+                            }
+                        }
+                }
+                .padding(.horizontal)
+                .padding(.top)
+                
+                Spacer()
+            }
+            
+            Rectangle()
+                .fill(.clear)
+                .frame(height: 72)
+        }
+        .padding(.top)
+        .background(.black)
+        .clipShape(.rect(cornerRadius: 24))
+        .padding(.top, 200)
     }
 }
 
