@@ -44,7 +44,6 @@ struct CoverCarouselCardView: View {
         }
         .frame(width: dimensions.width, height: dimensions.height)
         .onTapGesture {
-            print(content)
             path.append(content)
         }
     }
