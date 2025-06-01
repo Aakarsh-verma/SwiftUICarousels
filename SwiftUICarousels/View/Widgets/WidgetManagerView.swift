@@ -29,22 +29,22 @@ struct WidgetManagerView: View {
     private func StackCardsWidget() -> some View {
         switch item.dataType {
         case .imageModel, .none:
-            StackCarouselWidget(items: sampleImages) { imageModel in
-                CustomImageView(imageModel: CustomImageModel(for: imageModel.image))
+            StackCarouselWidget(items: .constant(sampleImages)) { imageModel in
+                CustomImageView(imageModel: CustomImageModel(for: imageModel.image.wrappedValue))
                     .scaledToFit()
                     .clipShape(.rect(cornerRadius: 20))
             }
             
         case .cardModel:
-            StackCarouselWidget(items: viewModel.animeCards, height: 400) { model in
-                CoverCarouselCardView(content: model, dimensions: .init(width: 240, height: 340))
+            StackCarouselWidget(items: $viewModel.animeCards, height: 300) { model in
+                CoverCarouselCardView(path: $path, content: model, dimensions: .init(width: 200, height: 300))
             } perform: {
                 await viewModel.fetchAnimeContent()
-            }            
+            }
             
         case .tripModel:
-            StackCarouselWidget(items: trips) { imageModel in
-                CustomImageView(imageModel: CustomImageModel(for: imageModel.image))
+            StackCarouselWidget(items: .constant(trips)) { imageModel in
+                CustomImageView(imageModel: CustomImageModel(for: imageModel.image.wrappedValue))
                     .scaledToFit()
                     .clipShape(.rect(cornerRadius: 20))
             }

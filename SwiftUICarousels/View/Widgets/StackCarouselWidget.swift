@@ -10,9 +10,9 @@ import SwiftUI
 struct StackCarouselWidget<T: Identifiable, Content: View>: View {
     @State private var currentIndex = 0
     
-    var items: [T]
+    var items: Binding<[T]>
     var height: CGFloat = CGFloat(240)
-    var content: (T) -> Content
+    var content: (Binding<T>) -> Content
     var perform: (() async -> Void)? = nil
     
     var body: some View {
@@ -30,8 +30,8 @@ struct StackCarouselWidget<T: Identifiable, Content: View>: View {
 }
 
 #Preview {
-    StackCarouselWidget(items: sampleImages) { imageModel in
-        CustomImageView(imageModel: CustomImageModel(for: imageModel.image))
+    StackCarouselWidget(items: .constant(sampleImages)) { imageModel in
+        CustomImageView(imageModel: CustomImageModel(for: imageModel.image.wrappedValue))
             .scaledToFit()
             .clipShape(.rect(cornerRadius: 20))
     }

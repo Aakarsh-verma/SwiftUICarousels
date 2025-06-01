@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CardModel: Identifiable {
+struct CardModel: Identifiable, Hashable {
     let id: UUID = UUID()
     var image: CustomImageModel = CustomImageModel(for: "m5")
     var season: String = "Brazil"
@@ -15,4 +15,5 @@ struct CardModel: Identifiable {
     var rating: String = "5.0"
     var review: String = "143"
     var description: String = "Rio de Janeiro, often simply called Rio, is one of Brazil’s most iconic cities, renowned for…"
+    var isWishlisted: Bool = false
 }

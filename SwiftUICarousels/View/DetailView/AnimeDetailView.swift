@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct AnimeDetailView: View {
-    @Binding var wishlisted: Bool
     var content: CardModel
-    
+    @Environment(\.dismiss) private var dismiss
+
     var body: some View {
         VStack {
             ZStack(alignment: .topLeading) {
@@ -19,9 +19,9 @@ struct AnimeDetailView: View {
                     .ignoresSafeArea()
                 
                 HStack {
-                    CircleButtonView(for: "chevron.left")
+                    CircleButtonView(for: "chevron.left", backButton: true)
                     Spacer()
-                    CircleButtonView(for: wishlisted ? "heart.fill" : "heart")
+                    CircleButtonView(for: content.isWishlisted ? "heart.fill" : "heart")
                 }
                 .padding(.horizontal)
                 
@@ -29,6 +29,7 @@ struct AnimeDetailView: View {
                     HStack(alignment: .top) {
                         Text(content.title)
                             .font(.title.bold())
+                            .foregroundStyle(.black)
                         
                         Spacer()
                         
@@ -38,7 +39,8 @@ struct AnimeDetailView: View {
                     
                     HStack(alignment: .top) {
                         Text(content.season)
-                            .font(.system(size: UIFont.preferredFont(forTextStyle: .subheadline).pointSize * 1.3))
+                            .font(.system(size: UIFont.preferredFont(forTextStyle: .subheadline).pointSize))
+                            .foregroundStyle(.black)
 
                         Spacer()
                         
@@ -52,8 +54,8 @@ struct AnimeDetailView: View {
                     VStack(alignment: .leading) {
                         Text(content.description)
                             .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                        
+                            .foregroundStyle(.gray)
+
                         Text("Read more")
                             .font(.subheadline)
                             .underline()
@@ -71,16 +73,15 @@ struct AnimeDetailView: View {
                 .offset(y: 200)
             }
             Spacer()
-            
-            
         }
         .navigationTitle("")
+        .navigationBarBackButtonHidden(true)
     }
     
     @ViewBuilder
-    private func CircleButtonView(for image: String) -> some View {
+    private func CircleButtonView(for image: String, backButton: Bool = false) -> some View {
         Button {
-            //
+            if backButton { dismiss() }
         } label: {
             Circle()
                 .fill(.white.secondary)
@@ -96,5 +97,5 @@ struct AnimeDetailView: View {
 }
 
 #Preview {
-    AnimeDetailView(wishlisted: .constant(false), content: .init())
+    AnimeDetailView(content: .init())
 }

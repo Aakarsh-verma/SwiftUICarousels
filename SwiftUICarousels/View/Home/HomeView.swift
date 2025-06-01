@@ -13,22 +13,27 @@ struct HomeView: View {
     @State private var path = NavigationPath()
 
     var body: some View {
-        VStack {
-            TopHeaderView()
-            SearchHeaderView(searchText: $searchText, searchForeground: .ultraThick)
-                .padding(.horizontal)
-            ScrollView {
-                VStack(alignment: .leading) {
-                    ForEach(viewModel.dashboardWidgets) { widget in
-                        HomeWidgetView(item: widget, path: $path)
+        NavigationStack(path: $path) {
+            VStack {
+                TopHeaderView()
+                SearchHeaderView(searchText: $searchText, searchForeground: .ultraThick)
+                    .padding(.horizontal)
+                ScrollView {
+                    VStack(alignment: .leading) {
+                        ForEach(viewModel.dashboardWidgets) { widget in
+                            HomeWidgetView(item: widget, path: $path)
+                        }
                     }
+                    .environmentObject(viewModel)
                 }
-                .environmentObject(viewModel)
+            }
+            .background(.gray.quaternary)
+            .frame(maxHeight: .infinity)
+            .preferredColorScheme(.dark)
+            .navigationDestination(for: CardModel.self) { model in
+                AnimeDetailView(content: model)
             }
         }
-        .background(.gray.quaternary)
-        .frame(maxHeight: .infinity)
-        .preferredColorScheme(.dark)
         .task {
             await viewModel.fetchAnimeContent()
         }

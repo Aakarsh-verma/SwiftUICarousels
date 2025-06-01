@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct CustomImageModel: Identifiable {
+struct CustomImageModel: Identifiable, Hashable {
     let id: UUID = UUID()
     var image: String
     
