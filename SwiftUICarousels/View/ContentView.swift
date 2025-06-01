@@ -27,8 +27,7 @@ struct ContentView: View {
                     VStack(alignment: .leading) {
                         ForEach(viewModel.homeWidgets) { widget in
                             HomeWidgetView(
-                                viewType: widget.viewType,
-                                title: widget.title,
+                                item: widget,
                                 path: $path
                             )
                             .environmentObject(viewModel)
