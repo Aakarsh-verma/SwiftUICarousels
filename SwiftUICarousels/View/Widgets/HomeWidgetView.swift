@@ -8,21 +8,20 @@
 import SwiftUI
 
 struct HomeWidgetView: View {
-    var viewType: CarouselViewType
-    var title: String
+    var item: CarouselWidgetModel
     @Binding var path: NavigationPath
     
     var body: some View {
-        Text(title)
+        Text(item.title)
             .font(.title.bold())
             .padding(.horizontal)
             .padding(.top)
         
         VStack(alignment: .leading) {
             Button {
-                path.append(viewType.rawValue)
+                path.append(item.viewType.rawValue)
             } label: {
-                viewType.widgetView()
+                WidgetManagerView(path: $path, item: item)
                     .cornerRadius(12)
                     .shadow(radius: 5)
             }
@@ -34,5 +33,9 @@ struct HomeWidgetView: View {
 }
 
 #Preview {
-    HomeWidgetView(viewType: .ambient, title: "Ambient", path: .constant(.init()))
+    @Previewable @StateObject var viewModel = HomeViewModel()
+    let model = CarouselWidgetModel(title: "Ambient", viewType: .ambient, dataType: .imageModel)
+    
+    HomeWidgetView(item: model, path: .constant(.init()))
+        .environmentObject(viewModel)
 }
