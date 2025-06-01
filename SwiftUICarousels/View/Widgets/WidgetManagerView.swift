@@ -37,7 +37,7 @@ struct WidgetManagerView: View {
             
         case .cardModel:
             StackCarouselWidget(items: viewModel.animeCards, height: 400) { model in
-                CoverCarouselCardView(content: model, dimensions: .init(width: 240, height: 400))
+                CoverCarouselCardView(content: model, dimensions: .init(width: 240, height: 340))
             } perform: {
                 await viewModel.fetchAnimeContent()
             }            
