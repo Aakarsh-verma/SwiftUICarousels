@@ -14,4 +14,5 @@ struct CardModel: Identifiable {
     var title: String = "Rio de Janeiro"
     var rating: String = "5.0"
     var review: String = "143"
+    var description: String = "Rio de Janeiro, often simply called Rio, is one of Brazil’s most iconic cities, renowned for…"
 }
