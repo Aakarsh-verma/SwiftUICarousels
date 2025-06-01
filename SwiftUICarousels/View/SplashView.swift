@@ -13,13 +13,12 @@ struct SplashView: View {
     var body: some View {
         Group {
             if isActive {
-                ContentView() // Your main app view
+                CustomTabView()
             } else {
                 ZStack {
-                    Image("Launch")
-                        .resizable()
+                    Rectangle()
+                        .fill(.black)
                         .ignoresSafeArea()
-                        .aspectRatio(contentMode: .fill)
                     
                     VStack {
                         Spacer()
