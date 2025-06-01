@@ -10,7 +10,7 @@ import SwiftUI
 struct CoverCarouselCardView: View {
     var content: CardModel = .init()
     var dimensions: CGSize = .init(width: 300, height: 400)
-    private let fontScale: CGFloat = 1.5
+    private let fontScale: CGFloat = 1.2
     @State private var wishlisted: Bool = false
 
     var body: some View {
@@ -64,31 +64,21 @@ struct CoverCarouselCardView: View {
                 Spacer()
                 VStack(alignment: .leading) {
                     Text(content.season)
-                        .font(.system(size: UIFont.preferredFont(forTextStyle: .caption1).pointSize * 1.5, weight: .bold))
+                        .font(.system(size: UIFont.preferredFont(forTextStyle: .caption1).pointSize * fontScale, weight: .bold))
                         .foregroundColor(.white.opacity(0.85))
                     
                     Text(content.title)
-                        .font(.system(size: UIFont.preferredFont(forTextStyle: .title2).pointSize * 1.3, weight: .bold))
+                        .font(.system(size: UIFont.preferredFont(forTextStyle: .title2).pointSize, weight: .bold))
                         .lineLimit(2)
                         .truncationMode(.tail)
                         .multilineTextAlignment(.leading)
                         .foregroundColor(.white)
                     
                     HStack(spacing: 5) {
-                        HStack(spacing: 12) {
-                            Label(content.rating, systemImage: "star")
-                                .font(.system(size: UIFont.preferredFont(forTextStyle: .subheadline).pointSize * 1.2))
-                                .foregroundStyle(.white)
-                                .padding(.vertical, 4)
-                                .padding(.horizontal, 8)
-                        }
-                        .overlay {
-                            Capsule(style: .continuous)
-                                .fill(.clear)
-                                .stroke(.white.secondary, style: .init(lineWidth: 2))
-                        }
-                        Text("  \(content.review)")
-                            .font(.system(size: UIFont.preferredFont(forTextStyle: .subheadline).pointSize * 1.2))
+                        RatingCapsule(rating: content.rating)
+                        
+                        Text("  \(content.review) reviews")
+                            .font(.system(size: UIFont.preferredFont(forTextStyle: .subheadline).pointSize))
                             .foregroundColor(.white.opacity(0.8))
                     }
                     .padding(.top, -12)
