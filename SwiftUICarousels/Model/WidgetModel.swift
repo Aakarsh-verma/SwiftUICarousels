@@ -12,6 +12,7 @@ struct CarouselWidgetModel: Identifiable, Hashable {
     var id: String = UUID().uuidString
     var title: String
     var viewType: CarouselViewType
+    var dataType: CarouselDataType? = .imageModel
 }
 
 enum CarouselViewType: String {
@@ -21,18 +22,8 @@ enum CarouselViewType: String {
     case stack
 }
 
-extension CarouselViewType {
-    @ViewBuilder
-    func widgetView() -> some View {
-        switch self {
-        case .cover:
-            CoverCarouselWidget()
-        case .ambient:
-            AmbientCarouselWidget()
-        case .parallax:
-            ParallaxCarouselWidget()
-        case .stack:
-            StackCarouselWidget()
-        }
-    }
+enum CarouselDataType: String {
+    case imageModel
+    case cardModel
+    case tripModel
 }
