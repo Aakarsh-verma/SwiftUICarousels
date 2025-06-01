@@ -21,13 +21,15 @@ struct StackCarousel: View {
                     CustomImageView(imageModel: CustomImageModel(for: imageModel.image))
                         .scaledToFit()
                         .clipShape(.rect(cornerRadius: 20))
-                }
+                } action: {_ in}
                 .frame(height: 500)
             }
         }
         .navigationTitle("Stack Carousel")
         .task {
-            await viewModel.fetchAnimeContent()
+            if viewModel.animeImages.isEmpty {
+                await viewModel.fetchAnimeContent()
+            }
         }
     }
 }

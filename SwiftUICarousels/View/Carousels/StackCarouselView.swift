@@ -12,6 +12,7 @@ struct StackCarouselView<Data: RandomAccessCollection, Content: View>: View wher
     var items: Data
     @Binding var currentIndex: Int
     var content: (Data.Element) -> Content
+    var action: (Data.Element) -> Void
     
     var body: some View {
         GeometryReader { proxy in
@@ -50,11 +51,7 @@ struct StackCarouselView<Data: RandomAccessCollection, Content: View>: View wher
             .transition(.opacity)
             .animation(.linear, value: currentIndex)
             .onTapGesture {
-                if index > currentIndex {
-                    currentIndex += 1
-                } else if index < currentIndex {
-                    currentIndex -= 1
-                }
+                handleTapAction(for: item, at: index)
             }
     }
     
@@ -66,6 +63,14 @@ struct StackCarouselView<Data: RandomAccessCollection, Content: View>: View wher
             currentIndex -= 1
         }
     }
+    
+    private func handleTapAction(for item: Data.Element, at index: Int) {
+        if index != currentIndex {
+            currentIndex += index > currentIndex ? 1 : -1
+        } else {
+            action(item)
+        }
+    }
 }
 
 #Preview {
@@ -75,5 +80,5 @@ struct StackCarouselView<Data: RandomAccessCollection, Content: View>: View wher
         CustomImageView(imageModel: CustomImageModel(for: imageModel.image))
             .scaledToFit()
             .clipShape(.rect(cornerRadius: 20))
-    }
+    } action: {_ in}
 }
