@@ -117,7 +117,7 @@ struct AnimeDetailView: View {
                     .frame(height: 72)
             }
         }
-        .disabled(offset > 48)
+        .scrollDisabled(offset > 48)
         .padding(.top)
         .background(.black)
         .clipShape(.rect(cornerRadius: 24))
