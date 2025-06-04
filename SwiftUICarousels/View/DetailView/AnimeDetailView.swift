@@ -73,6 +73,10 @@ struct AnimeDetailView: View {
     
     @ViewBuilder
     private func ContentView() -> some View {
+        let totalOffset = offset + dragOffset
+        let normalized = max(0, min(1, (totalOffset - 48) / (200 - 48)))
+        let cornerRadius = normalized * 24
+        
         VStack {
             Capsule()
                 .fill(.gray.secondary)
@@ -93,14 +97,26 @@ struct AnimeDetailView: View {
                         
                         VStack(alignment: .leading, spacing: 4) {
                             if (offset + dragOffset) > 48 {
-                                Text(content.title)
-                                    .font(.title.bold())
+                                withAnimation(.easeInOut) {
+                                    Text(content.title)
+                                        .font(.title.bold())
+                                }
                             }
                             
                             Text(content.season)
                                 .font(.system(size: UIFont.preferredFont(forTextStyle: .subheadline).pointSize))
                             
                             if (offset + dragOffset) <= 48 {
+                                HStack(spacing: 12) {
+                                    Text("\(content.episodes) episodes")
+                                        .font(.system(size: UIFont.preferredFont(forTextStyle: .caption1).pointSize * 1.3))
+                                    
+                                    Text("\(content.status)")
+                                        .font(.system(size: UIFont.preferredFont(forTextStyle: .caption1).pointSize * 1.3))
+                                        .underline()
+                                        .foregroundStyle(.gray)
+                                }
+                                
                                 RatingAndReviewView(vertical: false)
                                 .padding(.top, 10)
                             }
@@ -124,7 +140,7 @@ struct AnimeDetailView: View {
         .scrollDisabled(offset > 48)
         .padding(.top)
         .background(.black)
-        .clipShape(.rect(cornerRadius: 24))
+        .clipShape(.rect(cornerRadius: cornerRadius))
         .offset(y: offset + dragOffset)
         .gesture(ContentDragGesture())
     }

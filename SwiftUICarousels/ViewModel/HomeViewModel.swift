@@ -53,6 +53,8 @@ class HomeViewModel: ObservableObject {
                              title: anime.titleEnglish ?? anime.title ?? anime.titleJapanese ?? "",
                              rating: rating,
                              review: review,
+                             episodes: String(anime.episodes ?? 0),
+                             status: anime.status ?? "",
                              description: anime.synopsis ?? "")
         }
     }
