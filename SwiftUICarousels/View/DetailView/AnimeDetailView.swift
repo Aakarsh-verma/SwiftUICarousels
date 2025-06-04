@@ -32,8 +32,10 @@ struct AnimeDetailView: View {
                     
                     Spacer()
                     if (offset + dragOffset) <= 48 {
-                        Text("Details")
-                            .font(.largeTitle)
+                        Text(content.title)
+                            .font(.title2)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
                     }
                     
                     Spacer()
@@ -90,8 +92,10 @@ struct AnimeDetailView: View {
                         }
                         
                         VStack(alignment: .leading, spacing: 4) {
-                            Text(content.title)
-                                .font(.title.bold())
+                            if (offset + dragOffset) > 48 {
+                                Text(content.title)
+                                    .font(.title.bold())
+                            }
                             
                             Text(content.season)
                                 .font(.system(size: UIFont.preferredFont(forTextStyle: .subheadline).pointSize))
