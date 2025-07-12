@@ -23,8 +23,7 @@ struct HeaderView: View {
     @ViewBuilder
     func headerView() -> some View {
         HStack {
-            Image(systemName: "apple.meditate.circle.fill")
-                .font(.system(size: 35))
+            IconView(with: .init(name: "apple.meditate.circle.fill", type: .tertiary, size: .XLarge, color: .black, style: AnyShapeStyle(.white)))
             
             VStack(alignment: .leading, spacing: 6) {
                 Text(self.title)
@@ -41,13 +40,9 @@ struct HeaderView: View {
             
             Spacer(minLength: 0)
             
-            Image(systemName: "square.and.arrow.up.circle.fill")
-                .font(.largeTitle)
-                .foregroundStyle(.white, .fill)
+            IconView(with: .init(name: "square.and.arrow.up.circle.fill", type: .tertiary, size: .XLarge, color: .white, style: AnyShapeStyle(.fill)))
             
-            Image(systemName: "bell.circle.fill")
-                .font(.largeTitle)
-                .foregroundStyle(.white, .fill)
+            IconView(with: .init(name: "bell.circle.fill", type: .tertiary, size: .XLarge, color: .white, style: AnyShapeStyle(.fill)))
         }
         .padding(.bottom)
     }
@@ -55,4 +50,5 @@ struct HeaderView: View {
 
 #Preview {
     HeaderView()
+        .preferredColorScheme(.dark)
 }

@@ -70,21 +70,19 @@ struct CoverCarouselCardView: View {
     
     @ViewBuilder
     private func wishlistIcon() -> some View {
-        Circle()
-            .fill(.clear)
-            .stroke(.white.secondary, style: .init(lineWidth: 2))
-            .frame(width: 48, height: 48)
-            .overlay(
-                Image(systemName: content.isWishlisted ? "heart.fill" : "heart")
-                    .font(.system(size: 24, weight: .semibold))
-                    .foregroundStyle(.white)
-            )
+        let iconModel = IconModel(
+            name: "heart",
+            type: .secondary,
+            size: .Regular,
+            color: .white,
+            bgColor: .clear,
+            tapAction: {
+                content.isWishlisted.toggle()
+                wishlisted = content.isWishlisted
+            })
+        IconView(with: iconModel, isFilled: $wishlisted)
             .padding(.top)
             .padding(.trailing, 24)
-            .onTapGesture {
-                content.isWishlisted.toggle()
-            }
-            .symbolEffect(.bounce.byLayer.down, value: content.isWishlisted)
     }
     
     @ViewBuilder
