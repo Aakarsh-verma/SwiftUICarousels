@@ -24,6 +24,23 @@ enum ComponentDimension: CGFloat {
     case XXLarge = 48
 }
 
+struct CustomImageModel: Identifiable, Hashable {
+    let id: UUID = UUID()
+    var image: String
+    
+    var isRemoteImage: Bool {
+        return image.hasPrefix("http") || image.hasPrefix("https")
+    }
+    
+    var isAssetImage: Bool {
+        return UIImage(named: image) != nil
+    }
+    
+    init(for image: String) {
+        self.image = image
+    }
+}
+
 struct IconModel {
     let name: String
     let type: ComponentType
