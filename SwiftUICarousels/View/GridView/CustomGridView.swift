@@ -9,7 +9,8 @@ import SwiftUI
 
 struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where Data.Element: Identifiable {
     let items: Data
-    let itemSizeRatio: Double
+    let containerSize: CGFloat
+    let itemSizeRatio: CGFloat
     let layout: [GridItem]
     let isVertical: Bool 
     var content: (Data.Element) -> Content
@@ -17,8 +18,9 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
     
     init(items: Data,
          numberOfLayout: Int = 2,
-         itemSizeRatio: Double = 0.475,
+         itemSizeRatio: CGFloat = 0.45,
          isVertical: Bool = true,
+         containerSize: CGFloat? = nil,
          content: @escaping (Data.Element) -> Content, 
          action: @escaping (Data.Element) -> Void) {
         self.items = items
@@ -27,11 +29,12 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
         self.isVertical = isVertical
         self.content = content
         self.action = action
+        self.containerSize = containerSize ?? UIScreen.main.bounds.width
     }
     
     var body: some View {
-        GeometryReader { proxy in
-            let cardWidth: CGFloat = CGFloat(proxy.size.width * itemSizeRatio)
+        VStack {
+            let cardWidth: CGFloat = containerSize * itemSizeRatio
             
             if isVertical {
                 LazyVGrid(columns: layout, spacing: 12) { 
