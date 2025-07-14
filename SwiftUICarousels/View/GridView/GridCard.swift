@@ -35,7 +35,7 @@ struct GridCard: View {
                             textView()
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 20)
+                        .padding(.horizontal)
                         .padding(.bottom)
                     }
                 }
