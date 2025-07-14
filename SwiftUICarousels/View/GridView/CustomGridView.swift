@@ -14,7 +14,7 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
     let layout: [GridItem]
     let isVertical: Bool 
     var content: (Data.Element) -> Content
-    var action: (Data.Element) -> Void
+    var action: ((Data.Element) -> Void)?
     
     init(items: Data,
          numberOfLayout: Int = 2,
@@ -22,7 +22,7 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
          isVertical: Bool = true,
          containerSize: CGFloat? = nil,
          content: @escaping (Data.Element) -> Content, 
-         action: @escaping (Data.Element) -> Void) {
+         action: ((Data.Element) -> Void)? = nil) {
         self.items = items
         self.itemSizeRatio = itemSizeRatio
         self.layout = Array(repeating: GridItem(.flexible()), count: numberOfLayout)
@@ -63,7 +63,7 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
         content(item)
             .frame(width: cardWidth)            
             .onTapGesture {
-                action(item)
+                action?(item)
             }
     }
 }
