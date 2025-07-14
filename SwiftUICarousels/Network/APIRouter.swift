@@ -21,6 +21,7 @@ enum APIRouter {
     case season(AnimeSeasonContext)
     case top
     case recommendation
+    case search(query: String)
 }
 
 extension APIRouter {
@@ -42,6 +43,8 @@ extension APIRouter {
             return "top/anime"
         case .recommendation:
             return "recommendations/anime"
+        case .search:
+            return "anime"
         }
     }
     
@@ -49,12 +52,24 @@ extension APIRouter {
         return "GET"
     }
     
+    var queryParams: [URLQueryItem] {
+        switch self {
+        case .search(let query):
+            var queryItems = [URLQueryItem]()
+            queryItems.append(URLQueryItem(name: "q", value: query))
+            return queryItems
+            
+        default:
+            return []
+        }
+    }
+    
     func asURLRequest() throws -> URLRequest {
         guard var components = URLComponents(string: baseURL + path) else {
             throw URLError(.badURL)
         }
         
-        components.queryItems = .none
+        components.queryItems = queryParams
         
         guard let url = components.url else {
             throw URLError(.badURL)

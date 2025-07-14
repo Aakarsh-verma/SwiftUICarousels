@@ -30,6 +30,18 @@ class SearchViewModel: ObservableObject {
     }
     
     @MainActor
+    func fetchSearchAnimeContent(for query: String) async {
+        let router: APIRouter = .search(query: query)
+        do {
+            let response: AnimeResponseModel = try await service.request(router)
+            let animes = response.data ?? []
+            self.configureContentCards(with: animes)
+        } catch {
+            print("API Error:", error)
+        }
+    }
+    
+    @MainActor
     func configureContentCards(with data: [AnimeData]) {
         animeCards = data.compactMap { anime in
             let rating = (anime.score != nil) ? String(anime.score ?? 0.0) : "-"

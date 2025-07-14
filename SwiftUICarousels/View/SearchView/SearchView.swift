@@ -16,10 +16,20 @@ struct SearchView: View {
         NavigationStack(path: $path) {
             VStack {
                 TopHeaderView()
-                SearchHeaderView(searchText: $searchText, searchForeground: .ultraThick)
+                SearchHeaderView(
+                    searchText: $searchText,
+                    searchForeground: .ultraThick,
+                    submitAction: {
+                        Task(priority: .userInitiated) { 
+                            await viewModel.fetchSearchAnimeContent(for: searchText)
+                        }  
+                    }
+                )
                     .padding(.horizontal)
                 ScrollView {
-                    CustomGridView(items: $viewModel.animeCards) { model in
+                    CustomGridView(
+                        items: $viewModel.animeCards
+                    ) { model in
                         GridCard(path: $path, content: model)
                     }
 
