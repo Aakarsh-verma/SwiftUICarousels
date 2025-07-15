@@ -25,8 +25,8 @@ struct SearchView: View {
                         }  
                     }
                 )
-                    .padding(.horizontal)
-                ScrollView {
+
+                ScrollView(showsIndicators: false) {
                     CustomGridView(
                         items: $viewModel.animeCards
                     ) { model in
@@ -35,6 +35,7 @@ struct SearchView: View {
 
                 }
             }
+            .padding(.horizontal)
             .background(.gray.quaternary)
             .frame(maxHeight: .infinity)
             .preferredColorScheme(.dark)

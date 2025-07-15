@@ -30,7 +30,6 @@ struct TopHeaderView: View {
                 .font(.largeTitle)
                 .foregroundStyle(.gray)
         }
-        .padding(.horizontal)
     }
 }
 
