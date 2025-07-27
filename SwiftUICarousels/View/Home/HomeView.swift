@@ -16,8 +16,11 @@ struct HomeView: View {
         NavigationStack(path: $path) {
             VStack {
                 TopHeaderView()
+                    .padding(.horizontal)
+                
                 SearchHeaderView(searchText: $searchText, searchForeground: .ultraThick)
                     .padding(.horizontal)
+                
                 ScrollView {
                     VStack(alignment: .leading) {
                         ForEach(viewModel.dashboardWidgets) { widget in
