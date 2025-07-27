@@ -11,6 +11,7 @@ struct SearchView: View {
     @State private var searchText: String = ""
     @StateObject private var viewModel = SearchViewModel()
     @State private var path = NavigationPath()
+    @Binding var hideTabBar: Bool 
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -34,6 +35,19 @@ struct SearchView: View {
                     }
 
                 }
+                .onScrollPhaseChange { oldPhase, newPhase in
+                    switch newPhase {
+                    case .idle:
+                        withAnimation { 
+                            hideTabBar = false
+                        }
+                    case .decelerating:
+                        withAnimation { 
+                            hideTabBar = true
+                        }
+                    default: break
+                    }
+                }
             }
             .padding(.horizontal)
             .background(.gray.quaternary)
@@ -50,5 +64,5 @@ struct SearchView: View {
 }
 
 #Preview {
-    SearchView()
+    SearchView(hideTabBar: .constant(true))
 }

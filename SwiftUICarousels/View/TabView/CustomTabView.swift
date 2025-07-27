@@ -10,14 +10,15 @@ import SwiftUI
 struct CustomTabView: View {
     @State var tabBarItems: [TabBarItem] = [.home, .search, .wishlist, .profile]
     @State var activeTab: TabBarItem = .home
+    @State private var hideTabBar: Bool = false
     
     var body: some View {
-        FloatingTabView(selection: $activeTab, tabItems: $tabBarItems) { tabBarItem, tabHeight in
+        FloatingTabView(selection: $activeTab, tabItems: $tabBarItems, hideTabBar: $hideTabBar) { tabBarItem, tabHeight in
             switch tabBarItem {
             case .home:
                 HomeView()
             case .search:
-                ContentView()
+                SearchView(hideTabBar: $hideTabBar)
             case .wishlist:
                 ContentView()
             case .profile:

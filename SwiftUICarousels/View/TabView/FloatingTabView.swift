@@ -10,12 +10,14 @@ import SwiftUI
 struct FloatingTabView<Content: View, Value: CaseIterable & Hashable & FloatingTabProtocol>: View where Value.AllCases: RandomAccessCollection {
     @Binding var selection: Value
     @Binding var tabItems: [Value]
+    @Binding var hideTabBar: Bool
     var config: FloatingTabConfig
     var content: (Value, CGFloat) -> Content
     
-    init(config: FloatingTabConfig = .init(), selection: Binding<Value>, tabItems: Binding<[Value]>, @ViewBuilder content: @escaping (Value, CGFloat) -> Content) {
+    init(config: FloatingTabConfig = .init(), selection: Binding<Value>, tabItems: Binding<[Value]>, hideTabBar: Binding<Bool>, @ViewBuilder content: @escaping (Value, CGFloat) -> Content) {
         self._selection = selection
         self._tabItems = tabItems
+        self._hideTabBar = hideTabBar
         self.content = content
         self.config = config
     }
@@ -45,10 +47,17 @@ struct FloatingTabView<Content: View, Value: CaseIterable & Hashable & FloatingT
                 }
             }
             
-            FloatingTabBar(config: config, activeTab: $selection, tabItems: tabItems)
-                .padding(.horizontal, 40)
-                .padding(.bottom, config.insetAmount)
+            if !hideTabBar {
+                floatingTabBar
+                    .transition(.offset(y: 200))
+            }
         }
+    }
+    
+    var floatingTabBar: some View {
+        FloatingTabBar(config: config, activeTab: $selection, tabItems: tabItems)
+            .padding(.horizontal, 40)
+            .padding(.bottom, config.insetAmount)
     }
 }
 
@@ -56,7 +65,7 @@ struct FloatingTabView<Content: View, Value: CaseIterable & Hashable & FloatingT
     @Previewable @State var activeTab: TabBarItem = .home
     @Previewable @State var tabItems: [TabBarItem] = [.home, .search, .wishlist, .profile]
     
-    FloatingTabView(selection: $activeTab, tabItems: $tabItems, content: { tab, _ in
+    FloatingTabView(selection: $activeTab, tabItems: $tabItems, hideTabBar: .constant(false), content: { tab, _ in
         switch tab {
         case .home: Text(TabBarItem.home.rawValue)
         case .search: Text(TabBarItem.search.rawValue)
