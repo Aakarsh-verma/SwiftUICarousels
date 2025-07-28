@@ -11,6 +11,8 @@ class APIService: NetworkService {
     func request<T: Decodable>(_ router: APIRouter) async throws -> T {
         let request = try router.asURLRequest()
         
+        print("API REQUEST URL \(request.url?.absoluteString ?? "")")
+        
         let (data, response): (Data, URLResponse)
         do {
             (data, response) = try await URLSession.shared.data(for: request)
