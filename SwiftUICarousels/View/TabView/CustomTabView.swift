@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CustomTabView: View {
-    @State var tabBarItems: [TabBarItem] = [.home, .search, .wishlist, .profile]
+    @State var tabBarItems: [TabBarItem] = [.home, .search, .favorites, .profile]
     @State var activeTab: TabBarItem = .home
     @State private var hideTabBar: Bool = false
     
@@ -19,8 +19,8 @@ struct CustomTabView: View {
                 HomeView()
             case .search:
                 SearchView(hideTabBar: $hideTabBar)
-            case .wishlist:
-                ContentView()
+            case .favorites:
+                FavoritesView()
             case .profile:
                 ContentView()
             }

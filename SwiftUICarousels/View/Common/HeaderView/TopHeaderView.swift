@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TopHeaderView: View {
     let title: String = "Hello, "
-    let subtitle: String = "Welcome to AniBrowser!"
+    var subtitle: String = "Welcome to AniBrowser!"
     
     var body: some View {
         HStack {

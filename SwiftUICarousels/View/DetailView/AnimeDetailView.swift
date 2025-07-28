@@ -40,7 +40,7 @@ struct AnimeDetailView: View {
                     
                     Spacer()
                     
-                    CircleButtonView(for: content.isWishlisted ? "heart.fill" : "heart")
+                    CircleButtonView(for: content.isFavorite ? "heart.fill" : "heart")
                 }
                 .padding(.horizontal)
                 

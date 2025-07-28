@@ -63,13 +63,13 @@ struct FloatingTabView<Content: View, Value: CaseIterable & Hashable & FloatingT
 
 #Preview {
     @Previewable @State var activeTab: TabBarItem = .home
-    @Previewable @State var tabItems: [TabBarItem] = [.home, .search, .wishlist, .profile]
+    @Previewable @State var tabItems: [TabBarItem] = [.home, .search, .favorites, .profile]
     
     FloatingTabView(selection: $activeTab, tabItems: $tabItems, hideTabBar: .constant(false), content: { tab, _ in
         switch tab {
         case .home: Text(TabBarItem.home.rawValue)
         case .search: Text(TabBarItem.search.rawValue)
-        case .wishlist: Text(TabBarItem.wishlist.rawValue)
+        case .favorites: Text(TabBarItem.favorites.rawValue)
         case .profile: Text(TabBarItem.profile.rawValue)
         }
     })

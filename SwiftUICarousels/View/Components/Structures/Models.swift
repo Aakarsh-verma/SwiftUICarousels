@@ -24,8 +24,8 @@ enum ComponentDimension: CGFloat {
     case XXLarge = 48
 }
 
-struct CustomImageModel: Identifiable, Hashable {
-    let id: UUID = UUID()
+struct CustomImageModel: Identifiable, Hashable, Encodable, Decodable {
+    var id: UUID = UUID()
     var image: String
     
     var isRemoteImage: Bool {

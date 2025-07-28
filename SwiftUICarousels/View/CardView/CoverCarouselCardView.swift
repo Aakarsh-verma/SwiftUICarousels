@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CoverCarouselCardView: View {
-    @State private var wishlisted: Bool = false
+    @State private var isFavorite: Bool = false
     @Binding var path: NavigationPath
     @Binding var content: CardModel
     
@@ -27,7 +27,7 @@ struct CoverCarouselCardView: View {
             VStack {
                 HStack {
                     Spacer()
-                    wishlistIcon()
+                    favoriteIcon()
                 }
                 Spacer()
             }
@@ -69,7 +69,7 @@ struct CoverCarouselCardView: View {
     }
     
     @ViewBuilder
-    private func wishlistIcon() -> some View {
+    private func favoriteIcon() -> some View {
         let iconModel = IconModel(
             name: "heart",
             type: .secondary,
@@ -77,10 +77,10 @@ struct CoverCarouselCardView: View {
             color: .white,
             bgColor: .clear,
             tapAction: {
-                content.isWishlisted.toggle()
-                wishlisted = content.isWishlisted
+                content.isFavorite.toggle()
+                isFavorite = content.isFavorite
             })
-        IconView(with: iconModel, isFilled: $wishlisted)
+        IconView(with: iconModel, isFilled: $isFavorite)
             .padding(.top)
             .padding(.trailing, 24)
     }

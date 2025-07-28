@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct SearchView: View {
-    @State private var searchText: String = ""
     @StateObject private var viewModel = SearchViewModel()
     @State private var path = NavigationPath()
+    @State private var searchText: String = ""
     @Binding var hideTabBar: Bool 
 
     var body: some View {

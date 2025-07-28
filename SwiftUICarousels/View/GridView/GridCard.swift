@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GridCard: View {
-    @State private var wishlisted: Bool = false
+    @State private var isFavorite: Bool = false
     @Binding var path: NavigationPath
     @Binding var content: CardModel
     
@@ -24,7 +24,7 @@ struct GridCard: View {
                     VStack {
                         HStack {
                             Spacer()
-                            wishlistIcon()
+                            favoriteIcon()
                         }
                         Spacer()
                     }
@@ -39,6 +39,9 @@ struct GridCard: View {
                         .padding(.bottom)
                     }
                 }
+        }
+        .task {
+            self.isFavorite = content.isFavorite
         }
         .onTapGesture {
             path.append(content)
@@ -65,7 +68,7 @@ struct GridCard: View {
     }
     
     @ViewBuilder
-    private func wishlistIcon() -> some View {
+    private func favoriteIcon() -> some View {
         let iconModel = IconModel(
             name: "heart",
             type: .tertiary,
@@ -73,10 +76,13 @@ struct GridCard: View {
             color: .white,
             bgColor: .clear,
             tapAction: {
-                content.isWishlisted.toggle()
-                wishlisted = content.isWishlisted
+                content.isFavorite.toggle()
+                isFavorite = content.isFavorite
+                Task(priority: .background) { 
+                    await favoritesToggle()
+                }
             })
-        IconView(with: iconModel, isFilled: $wishlisted)
+        IconView(with: iconModel, isFilled: $isFavorite)
             .padding(.top)
             .padding(.trailing)
     }
@@ -95,6 +101,14 @@ struct GridCard: View {
                 .padding(.leading, -8)
         }
         
+    }
+    
+    private func favoritesToggle() async {
+        if isFavorite {
+            await AppViewModel.shared.addCard(content)
+        } else {
+            await AppViewModel.shared.removeCard(content)
+        }
     }
 }
 

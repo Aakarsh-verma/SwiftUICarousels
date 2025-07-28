@@ -30,7 +30,7 @@ struct FloatingTabConfig {
 enum TabBarItem: String, CaseIterable, FloatingTabProtocol {
     case home = "Home"
     case search = "Search"
-    case wishlist = "Wishlist"
+    case favorites = "Favorites"
     case profile = "Profile"
     
     var symbolImage: String {
@@ -39,7 +39,7 @@ enum TabBarItem: String, CaseIterable, FloatingTabProtocol {
             return "house"
         case .search:
             return "magnifyingglass"
-        case .wishlist:
+        case .favorites:
             return "heart"
         case .profile:
             return "person"
