@@ -14,6 +14,17 @@ enum AnimeSeason: String {
     case winter
 }
 
+enum SortingOrder: String {
+    case desc 
+    case asc 
+}
+
+enum AiringStatus: String {
+    case airing
+    case complete
+    case upcoming
+}
+
 typealias AnimeSeasonContext = (year: String, season: AnimeSeason)
 
 enum APIRouter {
@@ -22,6 +33,7 @@ enum APIRouter {
     case top
     case recommendation
     case search(query: String)
+    case filter(sort: SortingOrder, status: AiringStatus)
 }
 
 extension APIRouter {
@@ -43,7 +55,7 @@ extension APIRouter {
             return "top/anime"
         case .recommendation:
             return "recommendations/anime"
-        case .search:
+        case .search, .filter:
             return "anime"
         }
     }
@@ -57,6 +69,12 @@ extension APIRouter {
         case .search(let query):
             var queryItems = [URLQueryItem]()
             queryItems.append(URLQueryItem(name: "q", value: query))
+            return queryItems
+            
+        case .filter(let sort, let status):
+            var queryItems = [URLQueryItem]()
+            queryItems.append(URLQueryItem(name: "status", value: status.rawValue))
+            queryItems.append(URLQueryItem(name: "sort", value: sort.rawValue))
             return queryItems
             
         default:
