@@ -10,7 +10,8 @@ import SwiftUI
 class SearchViewModel: ObservableObject {
     @Published var animeCards: [CardModel] = []
     @Published var filters: [FilterTabsModel] = [
-        .init(item: .init(text: "Sort", leftImage: "slider.horizontal.3", color: .white, borderColor: .white, borderType: .roundRect(radius: 12))),
+        .init(item: .init(text: "Reverse", leftImage: "slider.horizontal.3", color: .white, borderColor: .white, borderType: .capsule, type: .sortOrder)),
+        .init(item: .init(text: "Airing", leftImage: "slider.horizontal.3", color: .white, borderColor: .white, borderType: .capsule, type: .status)),
     ]
     var favorite: [CardModel] = []
     private let service: NetworkService
@@ -36,6 +37,18 @@ class SearchViewModel: ObservableObject {
     @MainActor
     func fetchSearchAnimeContent(for query: String) async {
         let router: APIRouter = .search(query: query)
+        do {
+            let response: AnimeResponseModel = try await service.request(router)
+            let animes = response.data ?? []
+            self.configureContentCards(with: animes)
+        } catch {
+            print("API Error:", error)
+        }
+    }
+    
+    @MainActor
+    func fetchFilterAnimeContent(for status: AiringStatus = .airing, by order: SortingOrder = .asc) async {
+        let router: APIRouter = .filter(sort: order, status: status)
         do {
             let response: AnimeResponseModel = try await service.request(router)
             let animes = response.data ?? []
