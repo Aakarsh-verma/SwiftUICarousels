@@ -10,8 +10,30 @@ import SwiftUI
 class SearchViewModel: ObservableObject {
     @Published var animeCards: [CardModel] = []
     @Published var filters: [FilterTabsModel] = [
-        .init(item: .init(text: "Reverse", leftImage: "slider.horizontal.3", color: .white, borderColor: .white, borderType: .capsule, type: .sortOrder)),
-        .init(item: .init(text: "Airing", leftImage: "slider.horizontal.3", color: .white, borderColor: .white, borderType: .capsule, type: .status)),
+        .init(
+            item: .init(
+                text: "Reverse",
+                leftImage: "slider.horizontal.3",
+                color: .white,
+                secondaryColor: .black,
+                borderType: .roundRect(
+                    radius: 20
+                ),
+                type: .sortOrder
+            )
+        ),
+        .init(
+            item: .init(
+                text: "Airing",
+                leftImage: "slider.horizontal.3",
+                color: .white,
+                secondaryColor: .black,
+                borderType: .roundRect(
+                    radius: 20
+                ),
+                type: .status
+            )
+        ),
     ]
     var favorite: [CardModel] = []
     private let service: NetworkService

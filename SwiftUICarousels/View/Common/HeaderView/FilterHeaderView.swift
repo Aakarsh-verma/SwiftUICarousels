@@ -54,4 +54,5 @@ struct FilterHeaderView: View, FilterTabProtocol {
 #Preview {
     let filters = Array(repeating: FilterTabsModel(), count: 2)
     FilterHeaderView(filters: .constant(filters))
+        .preferredColorScheme(.dark)
 }

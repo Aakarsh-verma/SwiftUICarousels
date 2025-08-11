@@ -26,6 +26,10 @@ struct SearchView: View {
                         }  
                     }
                 )
+                
+                FilterHeaderView(filters: $viewModel.filters) { type in
+                    print(type)
+                }
 
                 ScrollView(showsIndicators: false) {
                     CustomGridView(

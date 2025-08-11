@@ -46,20 +46,20 @@ struct FilterItemModel: Identifiable {
     let text: String
     let leftImage: String
     let color: Color
-    let borderColor: Color
+    let secondaryColor: Color
     let borderType: BorderType
     let type: FilterType
     
     init(text: String = "Filter",
          leftImage: String = "heart.fill",
          color: Color = .black,
-         borderColor: Color = .black,
+         secondaryColor: Color = .white,
          borderType: BorderType = .capsule,
          type: FilterType = .status) {
         self.text = text
         self.leftImage = leftImage
         self.color = color
-        self.borderColor = borderColor
+        self.secondaryColor = secondaryColor
         self.borderType = borderType
         self.type = type
     }
@@ -80,20 +80,20 @@ struct FilterTab: View {
     }
     
     var body: some View {
-        HStack(spacing: 12) {
-            HStack {
-                Image(systemName: isSelected ? "xmark" : model.item.leftImage)
-                
-                Text(model.item.text)                    
-            }
-            .padding()
-            .background(isSelected ? model.item.color : .clear)
-            .foregroundColor(isSelected ? .black : model.item.color)
-            .clipShape(model.item.borderType.shape)
-            .onTapGesture {
-                delegate?.filterTapped(type: model.item.type)
-                isSelected.toggle()
-            }
+        let item = model.item
+        Button {
+            delegate?.filterTapped(type: item.type)
+            isSelected.toggle()
+        } label: {
+            Label(item.text, systemImage: item.leftImage)
+                .padding()
+                .foregroundColor(isSelected ? item.secondaryColor : item.color)
+                .background(isSelected ? item.color : .clear)
+                .clipShape(item.borderType.shape)
+                .overlay {
+                    item.borderType.shape
+                        .stroke(item.color, lineWidth: 2)
+                }
         }
     }
 }
