@@ -41,7 +41,7 @@ struct FloatingTabBar<Value: Hashable & FloatingTabProtocol>: View {
                                 .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
                         }
                     }
-                    .onTapGesture {
+                    .radialTapGesture {
                         activeTab = tab
                         toggleSymbolEffect[index].toggle()
                     }

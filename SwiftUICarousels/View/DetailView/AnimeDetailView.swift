@@ -190,7 +190,7 @@ struct AnimeDetailView: View {
             .font(.subheadline)
             .underline()
             .padding(.top, 2)
-            .onTapGesture {
+            .radialTapGesture {
                 withAnimation(.easeInOut) {
                     fullDescription.toggle()
                 }

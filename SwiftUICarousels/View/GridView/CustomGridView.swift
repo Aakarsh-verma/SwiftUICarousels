@@ -62,7 +62,7 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
     private func ItemView(_ item: Data.Element, for index: Int, with cardWidth: CGFloat) -> some View {
         content(item)
             .frame(width: cardWidth)            
-            .onTapGesture {
+            .radialTapGesture {
                 action?(item)
             }
     }
