@@ -50,7 +50,7 @@ struct StackCarouselView<Data: RandomAccessCollection, Content: View>: View wher
             .opacity(abs(offsetFromCurrent) <= 1 ? 1 : 0)
             .transition(.opacity)
             .animation(.linear, value: currentIndex)
-            .onTapGesture {
+            .radialTapGesture {
                 handleTapAction(for: item, at: index)
             }
     }

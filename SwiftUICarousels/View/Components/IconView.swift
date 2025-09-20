@@ -36,7 +36,7 @@ struct IconView: View {
                         view.foregroundStyle(model.color)
                     })
             }
-            .onTapGesture {
+            .radialTapGesture {
                 interaction.toggle()
                 model.tapAction?()
             }

@@ -40,12 +40,13 @@ struct GridCard: View {
                     }
                 }
         }
+        .radialTapGesture {
+            path.append(content)
+        }
         .task {
             self.isFavorite = content.isFavorite
         }
-        .onTapGesture {
-            path.append(content)
-        }
+        .clipped()
     }
     
     var gradientView: some View {
