@@ -71,7 +71,7 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
 #Preview {
     ScrollView {
         CustomGridView(items: sampleImages) { imageModel in
-            CustomImageView(imageModel: CustomImageModel(for: imageModel.image))
+            CustomImageView(CustomImageModel(for: imageModel.image))
                 .scaledToFit()
                 .clipShape(.rect(cornerRadius: 20))
             

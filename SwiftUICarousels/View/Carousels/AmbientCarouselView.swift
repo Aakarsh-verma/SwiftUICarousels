@@ -23,7 +23,7 @@ struct AmbientCarouselView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: spacing) {
                 ForEach(images) { model in
-                    CustomImageView(imageModel: CustomImageModel(for: model.image))
+                    CustomImageView(CustomImageModel(for: model.image))
                         .aspectRatio(contentMode: .fill)
                         .containerRelativeFrame(.horizontal)
                         .frame(height: 500)
@@ -56,7 +56,7 @@ struct AmbientCarouselView: View {
             ZStack {
                 ForEach(images.reversed()) { model in
                     let index = CGFloat(images.firstIndex(where: { $0.id == model.id }) ?? 0) + 1
-                    CustomImageView(imageModel: CustomImageModel(for: model.image))
+                    CustomImageView(CustomImageModel(for: model.image))
                         .aspectRatio(contentMode: .fill)
                         .frame(width: size.width, height: size.height)
                         .clipped()

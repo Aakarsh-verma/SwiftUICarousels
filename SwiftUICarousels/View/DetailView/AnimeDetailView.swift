@@ -147,7 +147,7 @@ struct AnimeDetailView: View {
     
     @ViewBuilder
     private func AnimeImageView() -> some View {
-        CustomImageView(imageModel: content.image)
+        CustomImageView(content.image)
             .aspectRatio(contentMode: .fit)
     }
     

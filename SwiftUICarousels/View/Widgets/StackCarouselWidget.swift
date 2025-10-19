@@ -31,7 +31,7 @@ struct StackCarouselWidget<T: Identifiable, Content: View>: View {
 
 #Preview {
     StackCarouselWidget(items: .constant(sampleImages)) { imageModel in
-        CustomImageView(imageModel: CustomImageModel(for: imageModel.image.wrappedValue))
+        CustomImageView(CustomImageModel(for: imageModel.image.wrappedValue))
             .scaledToFit()
             .clipShape(.rect(cornerRadius: 20))
     }

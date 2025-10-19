@@ -77,7 +77,7 @@ struct StackCarouselView<Data: RandomAccessCollection, Content: View>: View wher
     @Previewable @State var currentIndex = 0
 
     StackCarouselView(items: sampleImages, currentIndex: $currentIndex) { imageModel in
-        CustomImageView(imageModel: CustomImageModel(for: imageModel.image))
+        CustomImageView(CustomImageModel(for: imageModel.image))
             .scaledToFit()
             .clipShape(.rect(cornerRadius: 20))
     } action: {_ in}

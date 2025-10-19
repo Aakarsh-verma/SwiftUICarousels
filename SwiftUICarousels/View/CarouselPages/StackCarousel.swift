@@ -18,7 +18,7 @@ struct StackCarousel: View {
                     .padding(.top)
                 
                 StackCarouselView(items: viewModel.animeImages, currentIndex: $currentIndex) { imageModel in
-                    CustomImageView(imageModel: CustomImageModel(for: imageModel.image))
+                    CustomImageView(CustomImageModel(for: imageModel.image))
                         .scaledToFit()
                         .clipShape(.rect(cornerRadius: 20))
                 } action: {_ in}

@@ -16,7 +16,7 @@ struct GridCard: View {
     
     var body: some View {
         ZStack {
-            CustomImageView(imageModel: content.image)
+            CustomImageView(content.image)
                 .aspectRatio(contentMode: .fit)
                 .clipShape(.rect(cornerRadius: 20))
                 .overlay {

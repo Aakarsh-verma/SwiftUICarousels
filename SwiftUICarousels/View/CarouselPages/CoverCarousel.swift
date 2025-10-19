@@ -18,7 +18,7 @@ struct CoverCarousel: View {
                 .padding(.horizontal)
             
             CoverCarouselView(config: .init(hasOpacity: true, hasScale: true), data: viewModel.animeImages, selection: $activeID) { item in
-                CustomImageView(imageModel: CustomImageModel(for: item.image))
+                CustomImageView(CustomImageModel(for: item.image))
                     .aspectRatio(contentMode: .fill)
             }
             .frame(height: 240)

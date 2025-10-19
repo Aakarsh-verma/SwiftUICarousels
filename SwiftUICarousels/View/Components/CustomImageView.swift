@@ -10,6 +10,12 @@ import Kingfisher
 
 struct CustomImageView: View {
     var imageModel: CustomImageModel
+    var zoomable: Bool = false
+    
+    init(_ imageModel: CustomImageModel, zooms: Bool = false) {
+        self.imageModel = imageModel
+        self.zoomable = zooms
+    }
     
     var body: some View {
         if imageModel.isRemoteImage {
@@ -19,6 +25,10 @@ struct CustomImageView: View {
                         .foregroundColor(.gray)
                 }
                 .resizable()
+                .applyIf(zoomable, modifier: { view in
+                    view
+                        .pinchZoom()
+                })
         } else if imageModel.isAssetImage {
             Image(imageModel.image)
                 .resizable()

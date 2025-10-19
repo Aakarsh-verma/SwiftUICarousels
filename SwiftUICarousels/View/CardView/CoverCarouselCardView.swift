@@ -17,7 +17,7 @@ struct CoverCarouselCardView: View {
     
     var body: some View {
         ZStack {
-            CustomImageView(imageModel: content.image)
+            CustomImageView(content.image)
                 .aspectRatio(contentMode: .fill)
                 .clipShape(.rect(cornerRadius: 20))
                 .overlay {
