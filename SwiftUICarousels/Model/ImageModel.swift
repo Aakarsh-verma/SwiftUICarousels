@@ -7,7 +7,12 @@
 
 import SwiftUI
 
-struct ImageModel: Identifiable {
+// MARK: - TO-DO Better Implementation of CardContentPreviewProtocol not Generic enough for other models
+struct ImageModel: Identifiable, CardContentPreviewProtocol {
+    func getCardContent() -> CardModel {
+        return CardModel.init()
+    }
+    
     var id: UUID = UUID()
     var image: String
 }

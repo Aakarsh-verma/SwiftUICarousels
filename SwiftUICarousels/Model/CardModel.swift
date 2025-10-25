@@ -7,7 +7,17 @@
 
 import SwiftUI
 
-struct CardModel: Identifiable, Hashable, Encodable, Decodable {
+// MARK: - TO-DO Better Implementation not Generic enough for other models
+protocol CardContentPreviewProtocol {
+    var id: UUID { get set }
+    func getCardContent() -> CardModel
+}
+
+struct CardModel: Identifiable, Hashable, Encodable, Decodable, CardContentPreviewProtocol {
+    func getCardContent() -> CardModel {
+        return self
+    }
+    
     var id: UUID = UUID()
     var image: CustomImageModel = CustomImageModel(for: "m5")
     var season: String = "Brazil"

@@ -45,6 +45,21 @@ extension View {
             self
         }
     }
+    
+    func onGlobalAppTouch(_ action: @escaping (_ phase: UITouch.Phase, _ location: CGPoint) -> Void) -> some View {
+        self.background(GlobalTouchWindowObserver(onTouch: action))
+    }
+    
+    @ViewBuilder
+    func pinchZoom() -> some View {
+        PinchZoomHelper { self }
+    }
 }
 
+extension Identifiable {
+    func getContentFromBinding<T>() -> T? {
+        if let content = self as? Binding<T> { return content.wrappedValue }
+        return nil
+    }
+}
 

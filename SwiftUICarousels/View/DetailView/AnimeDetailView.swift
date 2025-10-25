@@ -7,11 +7,13 @@
 
 import SwiftUI
 
+// MARK: - TO-DO Create Separate Views for Peeking
 struct AnimeDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var fullDescription: Bool = false
     @State private var offset: CGFloat = 200
     @State private var dragOffset: CGFloat = 0
+    var isBeingPeeked: Bool = false
     var content: CardModel
 
     var body: some View {
@@ -43,6 +45,7 @@ struct AnimeDetailView: View {
                     CircleButtonView(for: content.isFavorite ? "heart.fill" : "heart")
                 }
                 .padding(.horizontal)
+                .opacity(isBeingPeeked ? 0 : 1)
                 
                 ContentView()
             }
@@ -99,7 +102,7 @@ struct AnimeDetailView: View {
                             if (offset + dragOffset) > 48 {
                                 withAnimation(.easeInOut) {
                                     Text(content.title)
-                                        .font(.title.bold())
+                                        .font(isBeingPeeked ? .body : .title.bold())
                                 }
                             }
                             
@@ -148,7 +151,7 @@ struct AnimeDetailView: View {
     @ViewBuilder
     private func AnimeImageView() -> some View {
         CustomImageView(content.image)
-            .aspectRatio(contentMode: .fit)
+            .aspectRatio(contentMode: isBeingPeeked ? .fill : .fit)
     }
     
     var ratingView: some View {
