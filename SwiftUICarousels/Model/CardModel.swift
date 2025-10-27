@@ -7,17 +7,10 @@
 
 import SwiftUI
 
-// MARK: - TO-DO Better Implementation not Generic enough for other models
-protocol CardContentPreviewProtocol {
-    var id: UUID { get set }
-    func getCardContent() -> CardModel
-}
-
-struct CardModel: Identifiable, Hashable, Encodable, Decodable, CardContentPreviewProtocol {
-    func getCardContent() -> CardModel {
-        return self
-    }
-    
+struct CardModel: Identifiable, 
+                    Hashable, 
+                    Encodable, 
+                    Decodable, CardPreviewContent {    
     var id: UUID = UUID()
     var image: CustomImageModel = CustomImageModel(for: "m5")
     var season: String = "Brazil"
@@ -28,4 +21,8 @@ struct CardModel: Identifiable, Hashable, Encodable, Decodable, CardContentPrevi
     var status: String = "Finished"
     var description: String = "Rio de Janeiro, often simply called Rio, is one of Brazil’s most iconic cities, renowned for…"
     var isFavorite: Bool = false
+    
+    func getPreviewData() -> PreviewDataModel? {
+        return .init(image: image, title: title, description: description)
+    }
 }

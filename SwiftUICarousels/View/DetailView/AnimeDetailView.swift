@@ -7,13 +7,11 @@
 
 import SwiftUI
 
-// MARK: - TO-DO Create Separate Views for Peeking
 struct AnimeDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var fullDescription: Bool = false
     @State private var offset: CGFloat = 200
     @State private var dragOffset: CGFloat = 0
-    var isBeingPeeked: Bool = false
     var content: CardModel
 
     var body: some View {
@@ -45,7 +43,6 @@ struct AnimeDetailView: View {
                     CircleButtonView(for: content.isFavorite ? "heart.fill" : "heart")
                 }
                 .padding(.horizontal)
-                .opacity(isBeingPeeked ? 0 : 1)
                 
                 ContentView()
             }
@@ -102,7 +99,7 @@ struct AnimeDetailView: View {
                             if (offset + dragOffset) > 48 {
                                 withAnimation(.easeInOut) {
                                     Text(content.title)
-                                        .font(isBeingPeeked ? .body : .title.bold())
+                                        .font(.title.bold())
                                 }
                             }
                             
@@ -145,13 +142,18 @@ struct AnimeDetailView: View {
         .background(.black)
         .clipShape(.rect(cornerRadius: cornerRadius))
         .offset(y: offset + dragOffset)
-        .gesture(ContentDragGesture())
+        .getContentDragGesture(offset: $offset, 
+                               dragOffset: $dragOffset, 
+                               topSpace: 48,
+                               pullDownOffset: 200,
+                               min: 48, 
+                               max: 350)
     }
     
     @ViewBuilder
     private func AnimeImageView() -> some View {
         CustomImageView(content.image)
-            .aspectRatio(contentMode: isBeingPeeked ? .fill : .fit)
+            .aspectRatio(contentMode: .fit)
     }
     
     var ratingView: some View {
@@ -198,24 +200,7 @@ struct AnimeDetailView: View {
                     fullDescription.toggle()
                 }
             }
-    }
-    
-    private func ContentDragGesture() -> some Gesture {
-        return DragGesture()
-            .onChanged { value in
-                let total = offset + value.translation.height
-                if total >= 48 && total < 350 {
-                    dragOffset = value.translation.height
-                }
-            }
-            .onEnded { value in
-                let newOffset = offset + value.translation.height
-                withAnimation(.spring()) {
-                    offset = max(48, min(200, newOffset))
-                    dragOffset = 0
-                }
-            }
-    }
+    }    
 }
 
 #Preview {
