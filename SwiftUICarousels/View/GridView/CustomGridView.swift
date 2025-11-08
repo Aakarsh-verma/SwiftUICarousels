@@ -9,7 +9,6 @@ import SwiftUI
 
 // MARK: - TO-DO OPTIMIZE IMPLEMENTATION
 // Pending Items: 
-// 1. Peek Co-ordinates
 // 2. Use Foundation model to summarize description
 // 3. Still not able to feel haptic imapct in iPhone 13
 struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where Data.Element: Identifiable {
@@ -20,8 +19,8 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
     let isVertical: Bool 
     var content: (Data.Element) -> Content
     var action: ((Data.Element) -> Void)?
-    
     @Namespace private var peekNS
+    @EnvironmentObject private var overlay: OverlayCoordinator
     @State private var peekItem: CardPreviewContent?
     @State private var showPeek = false
     
@@ -57,32 +56,20 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
                 }
             }
         }
-        .overlay { 
-            if let peekItem, showPeek {
-                ZStack(alignment: .center) {
-                    // Slight dim behind only visible content area
-                    GeometryReader { geo in
-                        Color.black.opacity(0.001)
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                withAnimation(.interactiveSpring(response: 0.35, dampingFraction: 0.9)) {
-                                    showPeek = false
-                                    self.peekItem = nil
-                                }
-                            }
-                    }
-
-                    PeekCard(peekItem)
-                        .matchedGeometryEffect(id: peekItem.id, in: peekNS)
-                        .transition(.scale.combined(with: .opacity))
-                        .zIndex(1)
-                }
+        .onChange(of: showPeek) { oldValue, newValue in
+            if newValue, let peekItem {
+                presentPeek(peekItem)
             }
         }
+        .onChange(of: overlay.isScreenTapped, { oldValue, newValue in
+            if newValue {
+                dismissPeek()
+            }
+        })
     }
     
     @ViewBuilder 
-    func GridLayout(cardWidth: CGFloat) -> some View {
+    private func GridLayout(cardWidth: CGFloat) -> some View {
         ForEach(Array(items.enumerated()), id: \.1.id) { index, item in
             ItemView(item, for: index, with: cardWidth)
         }
@@ -92,7 +79,7 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
     private func ItemView(_ item: Data.Element, for index: Int, with cardWidth: CGFloat) -> some View {
         content(item)
             .frame(width: cardWidth)
-            .matchedGeometryEffect(id: item.id, in: peekNS)
+            .matchedGeometryEffect(id: AnyHashable(item.id), in: peekNS, isSource: !showPeek)
             .radialTapGesture {
                 action?(item)
             }
@@ -106,7 +93,7 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
             }
     }
     
-    func getCardPreviewContent(_ item: Data.Element) -> CardPreviewContent? {
+    private func getCardPreviewContent(_ item: Data.Element) -> CardPreviewContent? {
         if let cardModel = (item as? Binding<CardModel>)?.wrappedValue as? CardPreviewContent {
             return cardModel
         } else if let imageModel = (item as? Binding<ImageModel>)?.wrappedValue as? CardPreviewContent {
@@ -116,9 +103,33 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
         }
         return nil
     }
+    
+    private func isPeekTarget(_ item: Data.Element) -> Bool {
+        guard let pid = peekItem?.id else { return false }
+        return AnyHashable(pid) == AnyHashable(item.id)
+    }
+    
+    private func presentPeek(_ content: CardPreviewContent) {
+        overlay.show(
+            PeekCard(content)
+                .matchedGeometryEffect(id: AnyHashable(content.id), in: peekNS, isSource: showPeek)
+                .transition(.scale.combined(with: .opacity))
+                .animation(.bouncy, value: showPeek)
+        )
+    }
+
+    private func dismissPeek() {
+        withAnimation(.interactiveSpring(response: 0.35, dampingFraction: 0.9)) {
+            overlay.hide()
+            showPeek = false
+            peekItem = nil
+        }
+    }
+    
 }
 
 #Preview {
+    @Previewable @StateObject var overlay = OverlayCoordinator()
     ScrollView {
         CustomGridView(items: sampleImages) { imageModel in
             CustomImageView(CustomImageModel(for: imageModel.image))
@@ -127,5 +138,12 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
             
         } action: {_ in}
             .padding(.horizontal)
+            .environmentObject(overlay)
+            .overlay {
+                if overlay.isPresented, let content = overlay.content {
+                    content
+                }
+            }
+            .animation(.bouncy, value: overlay.isPresented)
     }
 }
