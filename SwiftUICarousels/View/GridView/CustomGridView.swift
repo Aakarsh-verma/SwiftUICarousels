@@ -9,8 +9,7 @@ import SwiftUI
 
 // MARK: - TO-DO OPTIMIZE IMPLEMENTATION
 // Pending Items: 
-// 2. Use Foundation model to summarize description
-// 3. Still not able to feel haptic imapct in iPhone 13
+// Still not able to feel haptic imapct in iPhone 13
 struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where Data.Element: Identifiable {
     let items: Data
     let containerSize: CGFloat

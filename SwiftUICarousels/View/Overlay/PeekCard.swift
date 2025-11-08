@@ -14,7 +14,7 @@ struct PeekCard: View {
     
     @State private var offset: CGFloat = 250
     @State private var dragOffset: CGFloat = 0
-    
+    @State private var description: String = ""
     init(_ content: CardPreviewContent) {
         self.data = content.getPreviewData()
     }
@@ -23,13 +23,14 @@ struct PeekCard: View {
         ZStack(alignment: .topLeading) {
             getImageBackgroundView()
             
-            if let description = data?.description {
-                getDescriptionView(description)
-            }
+            getDescriptionView(description)
         }
         .frame(minWidth: width, maxWidth: width, maxHeight: 350, alignment: .center)
         .transition(.asymmetric(insertion: .scale(scale: 0.95).combined(with: .opacity), removal: .opacity))
         .zIndex(10)
+        .task {
+            description = await data?.getShortDescription() ?? ""
+        }
     }
     
     fileprivate func getImageBackgroundView() -> some View {
