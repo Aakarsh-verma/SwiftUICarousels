@@ -7,9 +7,6 @@
 
 import SwiftUI
 
-// MARK: - TO-DO OPTIMIZE IMPLEMENTATION
-// Pending Items: 
-// Still not able to feel haptic imapct in iPhone 13
 struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where Data.Element: Identifiable {
     let items: Data
     let containerSize: CGFloat
@@ -18,6 +15,11 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
     let isVertical: Bool 
     var content: (Data.Element) -> Content
     var action: ((Data.Element) -> Void)?
+    
+    private var cardWidth: CGFloat {
+        containerSize * itemSizeRatio
+    }
+    
     @Namespace private var peekNS
     @EnvironmentObject private var overlay: OverlayCoordinator
     @State private var peekItem: CardPreviewContent?
@@ -40,21 +42,7 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
     }
     
     var body: some View {
-        VStack {
-            let cardWidth: CGFloat = containerSize * itemSizeRatio
-            
-            if isVertical {
-                LazyVGrid(columns: layout, spacing: 12) { 
-                    GridLayout(cardWidth: cardWidth)                
-                }
-            } else {
-                ScrollView(.horizontal ,showsIndicators: false) {
-                    LazyHGrid(rows: layout, spacing: 12) { 
-                        GridLayout(cardWidth: cardWidth)
-                    }
-                }
-            }
-        }
+        gridContent
         .onChange(of: showPeek) { oldValue, newValue in
             if newValue, let peekItem {
                 presentPeek(peekItem)
@@ -67,15 +55,30 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
         })
     }
     
-    @ViewBuilder 
-    private func GridLayout(cardWidth: CGFloat) -> some View {
-        ForEach(Array(items.enumerated()), id: \.1.id) { index, item in
-            ItemView(item, for: index, with: cardWidth)
+    @ViewBuilder
+    private var gridContent: some View {
+        if isVertical {
+            LazyVGrid(columns: layout, spacing: 12) { 
+                gridItems                
+            }
+        } else {
+            ScrollView(.horizontal ,showsIndicators: false) {
+                LazyHGrid(rows: layout, spacing: 12) { 
+                    gridItems
+                }
+            }
         }
     }
     
     @ViewBuilder
-    private func ItemView(_ item: Data.Element, for index: Int, with cardWidth: CGFloat) -> some View {
+    private var gridItems: some View {
+        ForEach(items) { item in
+            ItemView(item, with: cardWidth)
+        }
+    }
+    
+    @ViewBuilder
+    private func ItemView(_ item: Data.Element, with cardWidth: CGFloat) -> some View {
         content(item)
             .frame(width: cardWidth)
             .matchedGeometryEffect(id: AnyHashable(item.id), in: peekNS, isSource: !showPeek)
@@ -88,7 +91,6 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
                     peekItem = getCardPreviewContent(item)
                     showPeek = true
                 }
-                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
             }
     }
     
@@ -116,7 +118,7 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
                 .animation(.bouncy, value: showPeek)
         )
     }
-
+    
     private func dismissPeek() {
         withAnimation(.interactiveSpring(response: 0.35, dampingFraction: 0.9)) {
             overlay.hide()
