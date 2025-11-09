@@ -21,4 +21,3 @@ jobs:
           MODEL: gpt-4o-mini
           LANGUAGE: English
           MAX_PATCH_LENGTH: 10000
-          IGNORE_PATTERNS: /node_modules/**/*,*.md
