@@ -7,16 +7,7 @@
 
 import SwiftUI
 
-extension View {
-    @ViewBuilder
-    func pinchZoom() -> some View {
-        PinchZoomHelper { 
-            self
-        }
-    }
-}
-
-fileprivate struct PinchZoomHelper<Content: View>: View {
+struct PinchZoomHelper<Content: View>: View {
     @ViewBuilder var content: Content
     @State private var config: ZoomConfig = .init()
     @State private var zoom: CGFloat = 1

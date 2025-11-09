@@ -7,9 +7,13 @@
 
 import SwiftUI
 
-struct ImageModel: Identifiable {
+struct ImageModel: Identifiable, CardPreviewContent {
     var id: UUID = UUID()
     var image: String
+    
+    func getPreviewData() -> PreviewDataModel? {
+        return .init(image: CustomImageModel(for: image))
+    }
 }
 
 var sampleImages: [ImageModel] = (1...9).compactMap { ImageModel(image: "m\($0)") }

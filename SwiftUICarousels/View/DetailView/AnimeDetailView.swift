@@ -142,7 +142,12 @@ struct AnimeDetailView: View {
         .background(.black)
         .clipShape(.rect(cornerRadius: cornerRadius))
         .offset(y: offset + dragOffset)
-        .gesture(ContentDragGesture())
+        .getContentDragGesture(offset: $offset, 
+                               dragOffset: $dragOffset, 
+                               topSpace: 48,
+                               pullDownOffset: 200,
+                               min: 48, 
+                               max: 350)
     }
     
     @ViewBuilder
@@ -195,24 +200,7 @@ struct AnimeDetailView: View {
                     fullDescription.toggle()
                 }
             }
-    }
-    
-    private func ContentDragGesture() -> some Gesture {
-        return DragGesture()
-            .onChanged { value in
-                let total = offset + value.translation.height
-                if total >= 48 && total < 350 {
-                    dragOffset = value.translation.height
-                }
-            }
-            .onEnded { value in
-                let newOffset = offset + value.translation.height
-                withAnimation(.spring()) {
-                    offset = max(48, min(200, newOffset))
-                    dragOffset = 0
-                }
-            }
-    }
+    }    
 }
 
 #Preview {
