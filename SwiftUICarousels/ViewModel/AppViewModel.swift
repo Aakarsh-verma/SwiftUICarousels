@@ -9,9 +9,10 @@ import SwiftUI
 import CoreData
 
 class AppViewModel: ObservableObject {
+    static let shared = AppViewModel()
     let favorites: any StoredDataRepositoryProtocol<CardModel>
     
-    init() {
+    private init() {
         self.favorites = FavoriteAnimeDataRepository()
     }
     

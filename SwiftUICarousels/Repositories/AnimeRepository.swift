@@ -22,7 +22,7 @@ final class AnimeRepository: AnimeRepositoryProtocol {
     
     init() {
         self.service = APIService()
-        self.favoritesRepository = FavoriteAnimeDataRepository()
+        self.favoritesRepository = AppViewModel.shared.favorites
     }
     
     func getAnimeCards(_ contentType: APIRouter) async -> [CardModel] {
