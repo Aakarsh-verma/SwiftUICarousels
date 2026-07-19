@@ -16,7 +16,7 @@ protocol AnimeRepositoryProtocol {
 
 final class AnimeRepository: AnimeRepositoryProtocol {
     private let service: NetworkService
-    private let favoritesRepository: any StoredDataRepositoryProtocol
+    private let favoritesRepository: any StoredDataRepositoryProtocol<CardModel>
     var favorite: [CardModel] = []
     var animeImages: [ImageModel] = []
     
@@ -30,7 +30,7 @@ final class AnimeRepository: AnimeRepositoryProtocol {
             async let favoriteRequest = self.favoritesRepository.getItems()
             async let animeRequest: AnimeResponseModel = service.request(contentType)
             let (favorites, response) = try await (favoriteRequest, animeRequest)
-            self.favorite = favorites as! [CardModel]
+            self.favorite = favorites
             self.animeImages = response.data?.map { ImageModel(image: ($0.images?["jpg"]?.imageURL ?? "")) } ?? []
             return self.configureContentCards(with: response.data ?? [])
         } catch {
