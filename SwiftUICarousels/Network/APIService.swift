@@ -5,17 +5,26 @@
 //  Created by Aakarsh Verma on 19/05/25.
 //
 
-import SwiftUI
+import Foundation
 
-class APIService: NetworkService {
+final class APIService: NetworkService {
+    var session: URLSession
+    var decoder: JSONDecoder
+    
+    init(session: URLSession = URLSession(configuration: .default), 
+         decoder: JSONDecoder = JSONDecoder()) {
+        self.session = session
+        self.decoder = decoder
+    }
+    
     func request<T: Decodable>(_ router: APIRouter) async throws -> T {
         let request = try router.asURLRequest()
         
-        print("API REQUEST URL \(request.url?.absoluteString ?? "")")
+        CustomLogger.shared.debugLog(request.url?.absoluteString ?? "")
         
         let (data, response): (Data, URLResponse)
         do {
-            (data, response) = try await URLSession.shared.data(for: request)
+            (data, response) = try await session.data(for: request)
         } catch {
             if let urlError = error as? URLError {
                 throw NetworkError.urlError(urlError)
@@ -23,11 +32,11 @@ class APIService: NetworkService {
                 throw error
             }
         }
-
+        
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw NetworkError.unknown(statusCode: -1)
+            throw NetworkError.invalidResponse
         }
-
+        
         return try parseAPIResponse(data, httpResponse: httpResponse)
     }
     
@@ -35,13 +44,13 @@ class APIService: NetworkService {
         switch httpResponse.statusCode {
         case 200..<300:
             do {
-                return try JSONDecoder().decode(T.self, from: data)
+                return try decoder.decode(T.self, from: data)
             } catch {
                 throw NetworkError.decodingError
             }
-
+            
         default:
-            if let apiError = try? JSONDecoder().decode(NetworkErrorResponse.self, from: data) {
+            if let apiError = try? decoder.decode(NetworkErrorResponse.self, from: data) {
                 throw NetworkError.apiError(apiError)
             } else {
                 throw NetworkError.unknown(statusCode: httpResponse.statusCode)

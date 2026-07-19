@@ -13,7 +13,8 @@ import CoreData
 extension AnimeDataModel {
     @NSManaged public var animeContent: Data?
     
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<AnimeDataModel> {
+    @nonobjc 
+    public class func fetchRequest() -> NSFetchRequest<AnimeDataModel> {
         return NSFetchRequest<AnimeDataModel>(entityName: "AnimeDataModel")
     }
     

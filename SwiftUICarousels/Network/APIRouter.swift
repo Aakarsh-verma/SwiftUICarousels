@@ -94,6 +94,9 @@ extension APIRouter {
         }
         
         var request = URLRequest(url: url)
+        headers.forEach { key, value in
+            request.setValue(value, forHTTPHeaderField: key)
+        }
         request.httpMethod = method
         return request
     }
