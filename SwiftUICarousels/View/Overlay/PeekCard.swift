@@ -85,8 +85,8 @@ struct PeekCard: View {
             }
             .onEnded { value in
                 let newOffset = offset + value.translation.height
-                print("Offset", offset)
-                print(newOffset)
+                CustomLogger.shared.debugLog("Offset \(offset)")
+                CustomLogger.shared.debugLog("\(newOffset)")
                 withAnimation(.spring()) {
                     offset = max(0, min(250, newOffset))
                     dragOffset = 0

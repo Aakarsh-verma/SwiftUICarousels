@@ -11,8 +11,9 @@ import CoreData
 class FavoritesViewModel: ObservableObject {
     @Published var animeCards: [CardModel] = []
     
-    func fetchFavorites(context: NSManagedObjectContext) async {
-        let cards = await AppViewModel.shared.getAnimeCards()
+    func fetchFavorites() async {
+        let favorites = AppViewModel.shared.favorites
+        let cards = await favorites.getItems()
         await MainActor.run {
             animeCards = cards
         }

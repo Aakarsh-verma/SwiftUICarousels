@@ -22,7 +22,7 @@ extension AnimeDataModel {
         do {
             try self.managedObjectContext?.save()
         } catch {
-            print("Failed to save context: \(error)")
+            CustomLogger.shared.debugLog("Failed to save context: \(error)")
         }
     }
     
@@ -32,7 +32,7 @@ extension AnimeDataModel {
             let data = try encoder.encode(list)
             self.animeContent = data
         } catch {
-            print("Encoding failed: \(error)")
+            CustomLogger.shared.debugLog("Encoding failed: \(error)")
         }
     }
     
@@ -42,7 +42,7 @@ extension AnimeDataModel {
         do {
             return try decoder.decode([CardModel].self, from: data)
         } catch {
-            print("Decoding failed: \(error)")
+            CustomLogger.shared.debugLog("Decoding failed: \(error)")
             return []
         }
     }

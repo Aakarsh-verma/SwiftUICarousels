@@ -17,19 +17,18 @@ struct SwiftUICarouselsApp: App {
             SplashView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .onChange(of: scenePhase) { oldPhase, newPhase in
+                    let context = persistenceController.container.viewContext
                     switch newPhase {
                     case .active:
-                        print("App is active")
-                        Task(priority: .background) { 
-                            let context = persistenceController.container.viewContext
+                        CustomLogger.shared.debugLog("App is active")
+                        Task(priority: .background) {
                             await AppViewModel.shared.fetchFavorites(context: context)
                         }
                     case .inactive:
-                        print("App is inactive")
+                        CustomLogger.shared.debugLog("App is inactive")
                     case .background:
-                        print("App moved to background")
+                        CustomLogger.shared.debugLog("App moved to background")
                         Task(priority: .background) { 
-                            let context = persistenceController.container.viewContext
                             await AppViewModel.shared.saveFavoriteAnime(context: context)
                         }
                     default:

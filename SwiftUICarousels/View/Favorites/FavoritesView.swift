@@ -36,7 +36,7 @@ struct FavoritesView: View {
             }
         }
         .task {
-            await viewModel.fetchFavorites(context: viewContext)
+            await viewModel.fetchFavorites()
         }
     }
 }
