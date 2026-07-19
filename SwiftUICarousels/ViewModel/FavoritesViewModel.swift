@@ -10,9 +10,14 @@ import CoreData
 
 class FavoritesViewModel: ObservableObject {
     @Published var animeCards: [CardModel] = []
+    private let favorites: any StoredDataRepositoryProtocol<CardModel>
+    
+    init() {
+        self.favorites = FavoriteAnimeDataRepository()
+    }
     
     func fetchFavorites(context: NSManagedObjectContext) async {
-        let cards = await AppViewModel.shared.getAnimeCards()
+        let cards = await favorites.getItems()
         await MainActor.run {
             animeCards = cards
         }

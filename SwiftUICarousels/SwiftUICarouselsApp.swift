@@ -10,27 +10,28 @@ import SwiftUI
 @main
 struct SwiftUICarouselsApp: App {
     @Environment(\.scenePhase) private var scenePhase
+    @StateObject var viewModel: AppViewModel = AppViewModel()
     let persistenceController = PersistenceController.shared
 
     var body: some Scene {
         WindowGroup {
             SplashView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environmentObject(viewModel)
                 .onChange(of: scenePhase) { oldPhase, newPhase in
+                    let context = persistenceController.container.viewContext
                     switch newPhase {
                     case .active:
-                        print("App is active")
-                        Task(priority: .background) { 
-                            let context = persistenceController.container.viewContext
-                            await AppViewModel.shared.fetchFavorites(context: context)
+                        CustomLogger.shared.debugLog("App is active")
+                        Task(priority: .background) {
+                            await viewModel.fetchFavorites(context: context)
                         }
                     case .inactive:
-                        print("App is inactive")
+                        CustomLogger.shared.debugLog("App is inactive")
                     case .background:
-                        print("App moved to background")
+                        CustomLogger.shared.debugLog("App moved to background")
                         Task(priority: .background) { 
-                            let context = persistenceController.container.viewContext
-                            await AppViewModel.shared.saveFavoriteAnime(context: context)
+                            await viewModel.saveFavoriteAnime(context: context)
                         }
                     default:
                         break

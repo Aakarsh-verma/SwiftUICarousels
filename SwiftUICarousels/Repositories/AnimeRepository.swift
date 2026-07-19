@@ -8,7 +8,6 @@
 import SwiftUI
 
 protocol AnimeRepositoryProtocol {
-    var service: NetworkService { get }
     var favorite: [CardModel] { get set }
     var animeImages: [ImageModel] { get }
     func getAnimeCards(_ contentType: APIRouter) async -> [CardModel]
@@ -16,24 +15,26 @@ protocol AnimeRepositoryProtocol {
 
 
 final class AnimeRepository: AnimeRepositoryProtocol {
-    private(set) var service: any NetworkService
+    private let service: NetworkService
+    private let favoritesRepository: any StoredDataRepositoryProtocol
     var favorite: [CardModel] = []
     var animeImages: [ImageModel] = []
     
     init() {
         self.service = APIService()
+        self.favoritesRepository = FavoriteAnimeDataRepository()
     }
     
     func getAnimeCards(_ contentType: APIRouter) async -> [CardModel] {
         do {
-            async let favoriteRequest = AppViewModel.shared.getAnimeCards()
+            async let favoriteRequest = self.favoritesRepository.getItems()
             async let animeRequest: AnimeResponseModel = service.request(contentType)
             let (favorites, response) = try await (favoriteRequest, animeRequest)
-            self.favorite = favorites
+            self.favorite = favorites as! [CardModel]
             self.animeImages = response.data?.map { ImageModel(image: ($0.images?["jpg"]?.imageURL ?? "")) } ?? []
             return self.configureContentCards(with: response.data ?? [])
         } catch {
-            print("API Error:", error)
+            CustomLogger.shared.debugLog("API Error: \(error)")
             return []
         }
     }

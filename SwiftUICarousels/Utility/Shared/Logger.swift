@@ -17,7 +17,7 @@ class CustomLogger {
     /// Produces Logs in console only in debug configurations
     func debugLog(_ content: String) {
 #if DEBUG
-        NSLog("API REQCustomLoggerUEST URL: %@", content)
+        NSLog("Logging %@", content)
 #endif 
     }
 }
