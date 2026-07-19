@@ -11,7 +11,6 @@ import CoreData
 struct FavoritesView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @StateObject private var viewModel = FavoritesViewModel()
-    @EnvironmentObject var appViewModel: AppViewModel
     @State private var path = NavigationPath()
     
     var body: some View {

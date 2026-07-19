@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct GridCard: View {
-    @EnvironmentObject var appViewModel: AppViewModel
     @State private var isFavorite: Bool = false
     @Binding var path: NavigationPath
     @Binding var content: CardModel
@@ -107,9 +106,9 @@ struct GridCard: View {
     
     private func favoritesToggle() async {
         if isFavorite {
-            await appViewModel.addCard(content)
+            await AppViewModel.shared.addCard(content)
         } else {
-            await appViewModel.removeCard(content)
+            await AppViewModel.shared.removeCard(content)
         }
     }
 }
