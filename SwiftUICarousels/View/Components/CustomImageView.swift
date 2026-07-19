@@ -40,7 +40,7 @@ struct CustomImageView: View {
 }
 
 #Preview {
-    CustomImageView(imageModel: CustomImageModel(for: "photo.fill"))
+    CustomImageView(CustomImageModel(for: "photo.fill"))
         .foregroundStyle(.gray)
         .padding()
 }

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct CoverCarousel: View {
     @State private var activeID: UUID?
-    @StateObject var viewModel = HomeViewModel(contentType: .season((year: "2020", season: .winter)))
+    @StateObject var viewModel = HomeViewModel()
 
     var body: some View {
         VStack {
@@ -29,7 +29,7 @@ struct CoverCarousel: View {
         .navigationTitle("Cover Carousel")
         .preferredColorScheme(.dark)
         .task {
-            await viewModel.fetchAnimeContent()
+            await viewModel.fetchAnimeContent((year: "2020", season: .winter))
         }
     }
 }

@@ -22,40 +22,16 @@ class HomeViewModel: ObservableObject {
     @Published var animeImages = [ImageModel]()
     @Published var animeCards: [CardModel] = []
     
-    private let service: NetworkService
-    private let contentType: APIRouter
+    private let animeRepository: AnimeRepositoryProtocol
     
-    init(service: NetworkService = APIService(), contentType: APIRouter = .season((year: "2014", season: .spring))) {
-        self.service = service
-        self.contentType = contentType
+    init() {
+        self.animeRepository = AnimeRepository()
     }
     
     @MainActor
-    func fetchAnimeContent() async {
-        do {
-            let response: AnimeResponseModel = try await service.request(contentType)
-            let animes = response.data ?? []
-            self.configureContentCards(with: animes)
-            self.animeImages = animes.map { ImageModel(image: ($0.images?["jpg"]?.imageURL ?? "")) }
-        } catch {
-            print("API Error:", error)
-        }
-    }
-    
-    @MainActor
-    func configureContentCards(with data: [AnimeData]) {
-        animeCards = data.compactMap { anime in
-            let rating = (anime.score != nil) ? String(anime.score ?? 0.0) : "-"
-            let review = anime.scoredBy?.formatCount() ?? ""
-            let season = (anime.season ?? "").uppercased() + ", " + anime.year.toString()
-            return CardModel(image: CustomImageModel(for: (anime.images?["jpg"]?.imageURL ?? "")),
-                             season: season,
-                             title: anime.titleEnglish ?? anime.title ?? anime.titleJapanese ?? "",
-                             rating: rating,
-                             review: review,
-                             episodes: String(anime.episodes ?? 0),
-                             status: anime.status ?? "",
-                             description: anime.synopsis ?? "")
-        }
+    func fetchAnimeContent(_ season: AnimeSeasonContext = (year: "2014", season: .spring)) async {
+        let contentType: APIRouter = .season(season)
+        self.animeCards = await animeRepository.getAnimeCards(contentType)
+        self.animeImages = animeRepository.animeImages
     }
 }

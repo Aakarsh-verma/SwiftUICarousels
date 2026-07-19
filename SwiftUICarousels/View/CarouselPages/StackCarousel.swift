@@ -9,7 +9,7 @@ import SwiftUI
 
 struct StackCarousel: View {
     @State private var currentIndex = 0
-    @StateObject var viewModel = HomeViewModel(contentType: .season((year: "2024", season: .winter)))
+    @StateObject var viewModel = HomeViewModel()
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -28,7 +28,7 @@ struct StackCarousel: View {
         .navigationTitle("Stack Carousel")
         .task {
             if viewModel.animeImages.isEmpty {
-                await viewModel.fetchAnimeContent()
+                await viewModel.fetchAnimeContent((year: "2024", season: .winter))
             }
         }
     }

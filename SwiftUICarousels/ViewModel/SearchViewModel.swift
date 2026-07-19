@@ -35,73 +35,27 @@ class SearchViewModel: ObservableObject {
             )
         ),
     ]
-    var favorite: [CardModel] = []
-    private let service: NetworkService
-    private let contentType: APIRouter
+    private let animeRepository: AnimeRepositoryProtocol
     
-    init(service: NetworkService = APIService(), contentType: APIRouter = .season((year: "2025", season: .spring))) {
-        self.service = service
-        self.contentType = contentType
+    init() {
+        self.animeRepository = AnimeRepository()
     }
     
     @MainActor
     func fetchAnimeContent() async {
-        do {
-            favorite = await AppViewModel.shared.getAnimeCards()
-            let response: AnimeResponseModel = try await service.request(contentType)
-            let animes = response.data ?? []
-            self.configureContentCards(with: animes)
-        } catch {
-            print("API Error:", error)
-        }
+        let contentType: APIRouter = .season((year: "2025", season: .spring))
+        self.animeCards = await animeRepository.getAnimeCards(contentType)
     }
     
     @MainActor
     func fetchSearchAnimeContent(for query: String) async {
         let router: APIRouter = .search(query: query)
-        do {
-            let response: AnimeResponseModel = try await service.request(router)
-            let animes = response.data ?? []
-            self.configureContentCards(with: animes)
-        } catch {
-            print("API Error:", error)
-        }
+        self.animeCards = await animeRepository.getAnimeCards(router)
     }
     
     @MainActor
     func fetchFilterAnimeContent(for status: AiringStatus = .airing, by order: SortingOrder = .asc) async {
         let router: APIRouter = .filter(sort: order, status: status)
-        do {
-            let response: AnimeResponseModel = try await service.request(router)
-            let animes = response.data ?? []
-            self.configureContentCards(with: animes)
-        } catch {
-            print("API Error:", error)
-        }
-    }
-    
-    @MainActor
-    func configureContentCards(with data: [AnimeData]) {
-        var seenTitles = Set<String>()
-
-        animeCards = data.compactMap { anime in
-            let title = anime.titleEnglish ?? anime.title ?? anime.titleJapanese ?? ""
-            guard !seenTitles.contains(title) else { return nil }
-            seenTitles.insert(title)
-
-            let rating = (anime.score != nil) ? String(anime.score ?? 0.0) : "-"
-            let review = anime.scoredBy?.formatCount() ?? ""
-            let season = (anime.season ?? "").uppercased() + ", " + anime.year.toString()
-            let isFavorite = favorite.filter { $0.title == title }
-            return CardModel(image: CustomImageModel(for: (anime.images?["jpg"]?.imageURL ?? "")),
-                             season: season,
-                             title: title,
-                             rating: rating,
-                             review: review,
-                             episodes: String(anime.episodes ?? 0),
-                             status: anime.status ?? "",
-                             description: anime.synopsis ?? "",
-                             isFavorite: !isFavorite.isEmpty)
-        }
+        self.animeCards = await animeRepository.getAnimeCards(router)
     }
 }

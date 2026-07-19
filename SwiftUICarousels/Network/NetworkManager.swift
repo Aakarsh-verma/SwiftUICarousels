@@ -24,6 +24,7 @@ enum NetworkError: LocalizedError {
     case apiError(NetworkErrorResponse)
     case decodingError
     case urlError(URLError)
+    case invalidResponse
     case unknown(statusCode: Int)
 
     var errorDescription: String? {
@@ -36,6 +37,8 @@ enum NetworkError: LocalizedError {
             return err.localizedDescription
         case .unknown(let code):
             return "Unexpected status code: \(code)"
+        case .invalidResponse:
+            return "Invalid response."
         }
     }
 }
