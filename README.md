@@ -52,7 +52,7 @@ Step-by-step guide on how to install and set up the project.
 
 2. Open the project directory
 
-4. Open `SwiftUICarousels.xcodeproj` in **xcode** and run the project
+4. Open `SwiftUICarousels.xcodeproj` in **xcode** and setup [MAL API](./API-INSTRUCTIONS.md) then proceed to run the project
 
 ---
 
