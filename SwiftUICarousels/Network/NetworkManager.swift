@@ -8,8 +8,8 @@
 import SwiftUI
 
 
-protocol NetworkService {
-    func request<T: Decodable>(_ router: APIRouter) async throws -> T
+protocol NetworkServiceProtocol {
+    func request<T: Decodable>(_ router: APIRouter) async throws -> T?
 }
 
 struct NetworkErrorResponse: Decodable {

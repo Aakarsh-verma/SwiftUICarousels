@@ -15,31 +15,26 @@ protocol AnimeRepositoryProtocol {
 
 
 final class AnimeRepository: AnimeRepositoryProtocol {
-    private let service: NetworkService
     private let favoritesRepository: any StoredDataRepositoryProtocol<CardModel>
+    private let datasource: any DataSourceRepositoryProtocol
     var favorite: [CardModel] = []
     var animeImages: [ImageModel] = []
     
     init() {
-        self.service = APIService()
         self.favoritesRepository = AppViewModel.shared.favorites
+        self.datasource = AnimeDataSourceRepository()
     }
     
     func getAnimeCards(_ contentType: APIRouter) async -> [CardModel] {
-        do {
-            async let favoriteRequest = self.favoritesRepository.getItems()
-            async let animeRequest: AnimeResponseModel = service.request(contentType)
-            let (favorites, response) = try await (favoriteRequest, animeRequest)
-            self.favorite = favorites
-            self.animeImages = response.data?.map { ImageModel(image: ($0.images?["jpg"]?.imageURL ?? "")) } ?? []
-            return self.configureContentCards(with: response.data ?? [])
-        } catch {
-            CustomLogger.shared.debugLog("API Error: \(error)")
-            return []
-        }
+        async let favoriteRequest = self.favoritesRepository.getItems()
+        async let animeRequest = datasource.getData(contentType) as? AnimeResponseModel
+        let (favorites, response) = await (favoriteRequest, animeRequest)
+        self.favorite = favorites
+        self.animeImages = response?.data?.map { ImageModel(image: $0.images?.mediumImageURL ?? "") } ?? []
+        return self.configureContentCards(with: response?.data ?? [])
     }
     
-    func configureContentCards(with data: [AnimeData]) -> [CardModel] {
+    private func configureContentCards(with data: [AnimeData]) -> [CardModel] {
         var seenTitles = Set<String>()
         var animeCards: [CardModel] = []
 
@@ -54,7 +49,7 @@ final class AnimeRepository: AnimeRepositoryProtocol {
             let isFavorite = favorite.filter { $0.title == title }
 
             let card = CardModel(
-                image: CustomImageModel(for: (anime.images?["jpg"]?.imageURL ?? "")),
+                image: CustomImageModel(for: anime.images?.mediumImageURL ?? ""),
                 season: season,
                 title: title,
                 rating: rating,

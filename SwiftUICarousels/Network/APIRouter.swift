@@ -49,19 +49,18 @@ enum APIRouter {
 }
 
 extension APIRouter {
-    var baseURL: String {
+    private var baseURL: String {
         return "https://api.myanimelist.net/v2/"
     }
     
-    var headers: [String: String] {
+    private var headers: [String: String] {
         return [
             "Content-Type": "application/json",
             "X-MAL-CLIENT-ID": AppConfiguration.malClientID
         ]
     }
-//    curl 'https://api.myanimelist.net/v2/anime/ranking?ranking_type=all&limit=4' \
 
-    var path: String {
+    private var path: String {
         switch self {
         case .seasonNow:
             return "seasons/now"
@@ -76,15 +75,15 @@ extension APIRouter {
         }
     }
     
-    var method: String {
+    private var method: String {
         return "GET"
     }
     
-    var dataFields: String {
+    private var dataFields: String {
         return "id,title,synopsis,broadcast,mean,rank,popularity,rating,status,genres,source,studios,main_picture,alternative_titles,start_date, end_date,num_scoring_users,created_at,updated_at,media_type,num_episodes,start_season"
     }
     
-    var queryParams: [URLQueryItem] {
+    private var queryParams: [URLQueryItem] {
         var queryItems = [URLQueryItem]()
         switch self {
         case .season:
@@ -109,6 +108,17 @@ extension APIRouter {
         return queryItems
     }
     
+    var routerKey: String? {
+        guard let components = URLComponents(string: baseURL + path) else {
+            return nil
+        }
+        return components.url?.absoluteString
+    }
+    
+    /**  
+     Generate URLRequest based on router
+     - Sample cURL:  curl 'https://api.myanimelist.net/v2/anime/ranking?ranking_type=all&limit=4' \
+     **/
     func asURLRequest() throws -> URLRequest {
         guard var components = URLComponents(string: baseURL + path) else {
             throw URLError(.badURL)

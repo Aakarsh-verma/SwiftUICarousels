@@ -44,69 +44,67 @@ private struct MALRanking: Decodable {
 }
 
 // MARK: - AnimeData
-struct AnimeData: Decodable, Identifiable {
-    var malID: Int?
-    var url: String?
-    var images: [String: AnimeImage]?
-    var title, titleEnglish, titleJapanese: String?
-    var type, source: String?
-    var episodes: Int?
-    var startDate, endDate, status: String?
-    var rating: String?
-    var score: Double?
-    var scoredBy, rank, popularity: Int?
-    var synopsis, season: String?
-    var year: Int?
-    var broadcast: Broadcast?
-    var studios, genres: [Demographic]?
+struct AnimeData: Decodable, Identifiable, Encodable {
+    let id: Int?
+    let url: String?
+    let images: AnimeImage?
+    let titles: AlternativeTitles?
+    let title, titleEnglish, titleJapanese: String?
+    let type, source: String?
+    let episodes: Int?
+    var rank: Int?
+    let startDate, endDate, status: String?
+    let rating: String?
+    let score: Double?
+    let scoredBy, popularity: Int?
+    let startSeason: SeasonDetails?
+    let synopsis, season: String?
+    let year: Int?
+    let broadcast: Broadcast?
+    let studios, genres: [Demographic]?
 
     // Additional MAL fields that do not have direct Jikan equivalents.
     var createdAt: String?
     var updatedAt: String?
     var averageEpisodeDuration: Int?
 
-    var id: Int { malID ?? 0 }
-
     private enum CodingKeys: String, CodingKey {
         case id, title
         case synopsis, broadcast
-        case mean, rank, popularity, rating
+        case score = "mean"
+        case rank, popularity, rating
         case status, genres, source, studios
-        case mainPicture = "main_picture"
-        case alternativeTitles = "alternative_titles"
+        case images = "main_picture"
+        case titles = "alternative_titles"
         case startDate = "start_date"
         case endDate = "end_date"
-        case numScoringUsers = "num_scoring_users"
+        case scoredBy = "num_scoring_users"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
-        case mediaType = "media_type"
-        case numEpisodes = "num_episodes"
+        case type = "media_type"
+        case episodes = "num_episodes"
         case startSeason = "start_season"
     }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        malID = try container.decodeIfPresent(Int.self, forKey: .id)
+        id = try container.decodeIfPresent(Int.self, forKey: .id)
         title = try container.decodeIfPresent(String.self, forKey: .title)
         // MARK: Image compatibility
-        if let mainPicture = try container.decodeIfPresent(AnimeImage.self, forKey: .mainPicture) {
-            images = ["jpg": mainPicture, "webp": mainPicture]
-        } else {
-            images = nil
-        }
+        images = try container.decodeIfPresent(AnimeImage.self, forKey: .images)
         // MARK: Alternative titles
-        let alternativeTitles = try container.decodeIfPresent(AlternativeTitles.self, forKey: .alternativeTitles)
-        titleEnglish = alternativeTitles?.english
-        titleJapanese = alternativeTitles?.japanese
+        titles = try container.decodeIfPresent(AlternativeTitles.self, forKey: .titles)
+        titleEnglish = titles?.english
+        titleJapanese = titles?.japanese
         // MARK: Basic information
-        type = try container.decodeIfPresent(String.self, forKey: .mediaType)
+        type = try container.decodeIfPresent(String.self, forKey: .type)
         source = try container.decodeIfPresent(String.self, forKey: .source)
-        episodes = try container.decodeIfPresent(Int.self, forKey: .numEpisodes)
+        episodes = try container.decodeIfPresent(Int.self, forKey: .episodes)
         status = try container.decodeIfPresent(String.self, forKey: .status)
         rating = try container.decodeIfPresent(String.self, forKey: .rating)
-        score = try container.decodeIfPresent(Double.self, forKey: .mean)
+        score = try container.decodeIfPresent(Double.self, forKey: .score)
         // MARK: Ranking and popularity
-        scoredBy = try container.decodeIfPresent(Int.self, forKey: .numScoringUsers)
+        scoredBy = try container.decodeIfPresent(Int.self, forKey: .scoredBy)
         rank = try container.decodeIfPresent(Int.self, forKey: .rank)
         popularity = try container.decodeIfPresent(Int.self, forKey: .popularity)
         // MARK: Description
@@ -115,7 +113,7 @@ struct AnimeData: Decodable, Identifiable {
         startDate = try container.decodeIfPresent(String.self, forKey: .startDate)
         endDate = try container.decodeIfPresent(String.self, forKey: .endDate)
         // MARK: Season
-        let startSeason = try container.decodeIfPresent(StartSeason.self, forKey: .startSeason)
+        startSeason = try container.decodeIfPresent(SeasonDetails.self, forKey: .startSeason)
         season = startSeason?.season
         year = startSeason?.year
         // MARK: Broadcast
@@ -127,12 +125,12 @@ struct AnimeData: Decodable, Identifiable {
         createdAt = try container.decodeIfPresent(String.self, forKey: .createdAt)
         updatedAt = try container.decodeIfPresent(String.self, forKey: .updatedAt)
         // Fields unavailable from MAL v2's anime object.
-        url = malID.map { "https://myanimelist.net/anime/\($0)" }
+        url = id.map { "https://myanimelist.net/anime/\($0)" }
     }
 }
 
 // MARK: - AlternativeTitles
-private struct AlternativeTitles: Decodable {
+struct AlternativeTitles: Decodable, Encodable {
     var synonyms: [String]?
     var english: String?
     var japanese: String?
@@ -144,14 +142,14 @@ private struct AlternativeTitles: Decodable {
     }
 }
 
-// MARK: - StartSeason
-private struct StartSeason: Decodable {
+// MARK: - SeasonDetails
+struct SeasonDetails: Decodable, Encodable {
     var year: Int?
     var season: String?
 }
 
 // MARK: - Broadcast
-struct Broadcast: Decodable {
+struct Broadcast: Decodable, Encodable {
     var day: String?
     var time: String?
     var timezone: String?
@@ -177,48 +175,24 @@ struct Broadcast: Decodable {
 }
 
 // MARK: - Demographic
-struct Demographic: Decodable {
+struct Demographic: Decodable, Encodable {
     var name: String?
     var id: Int?
 }
 
 // MARK: - AnimeImage
-struct AnimeImage: Decodable {
-    var imageURL: String?
-    var smallImageURL: String?
+struct AnimeImage: Decodable, Encodable {
+    var mediumImageURL: String?
     var largeImageURL: String?
 
     private enum CodingKeys: String, CodingKey {
-        case medium
-        case large
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let medium = try container.decodeIfPresent(String.self, forKey: .medium)
-        let large = try container.decodeIfPresent(String.self, forKey: .large)
-        imageURL = medium ?? large
-        smallImageURL = medium ?? large
-        largeImageURL = large ?? medium
-    }
-}
-
-// MARK: - Images
-struct Images: Decodable {
-    var imageURL, smallImageURL, mediumImageURL, largeImageURL: String?
-    var maximumImageURL: String?
-
-    private enum CodingKeys: String, CodingKey {
-        case imageURL = "image_url"
-        case smallImageURL = "small_image_url"
-        case mediumImageURL = "medium_image_url"
-        case largeImageURL = "large_image_url"
-        case maximumImageURL = "maximum_image_url"
+        case mediumImageURL = "medium"
+        case largeImageURL = "large"
     }
 }
 
 // MARK: - Pagination
-struct Pagination: Decodable {
+struct Pagination: Decodable, Encodable {
     var previousURL: String?
     var nextURL: String?
 

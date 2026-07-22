@@ -1,5 +1,5 @@
 //
-//  AnimeCardStore.swift
+//  ContentStorage.swift
 //  SwiftUICarousels
 //
 //  Created by Aakarsh Verma on 19/07/26.

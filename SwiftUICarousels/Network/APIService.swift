@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class APIService: NetworkService {
+final class APIService: NetworkServiceProtocol {
     var session: URLSession
     var decoder: JSONDecoder
     
@@ -17,15 +17,16 @@ final class APIService: NetworkService {
         self.decoder = decoder
     }
     
-    func request<T: Decodable>(_ router: APIRouter) async throws -> T {
+    func request<T: Decodable>(_ router: APIRouter) async throws -> T? {
         let request = try router.asURLRequest()
         
-        CustomLogger.shared.debugLog(request.url?.absoluteString ?? "")
+        CustomLogger.shared.debugLog("NETWORK:- REQUEST \n \(request)")
         
         let (data, response): (Data, URLResponse)
         do {
             (data, response) = try await session.data(for: request)
         } catch {
+            CustomLogger.shared.debugLog("NETWORK:- CALL Error \n \(error)")
             if let urlError = error as? URLError {
                 throw NetworkError.urlError(urlError)
             } else {
@@ -34,6 +35,7 @@ final class APIService: NetworkService {
         }
         
         guard let httpResponse = response as? HTTPURLResponse else {
+            CustomLogger.shared.debugLog("NETWORK:- RESPONSE Error")
             throw NetworkError.invalidResponse
         }
         
@@ -46,7 +48,12 @@ final class APIService: NetworkService {
             do {
                 return try decoder.decode(T.self, from: data)
             } catch {
-                throw NetworkError.decodingError
+                CustomLogger.shared.debugLog("NETWORK:- PARSING Error \n \(error)")
+                if error is DecodingError {
+                    throw NetworkError.decodingError
+                } else {
+                    throw NetworkError.unknown(statusCode: httpResponse.statusCode)
+                }
             }
             
         default:

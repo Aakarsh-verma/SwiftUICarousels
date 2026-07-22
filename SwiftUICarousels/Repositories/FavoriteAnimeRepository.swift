@@ -9,18 +9,17 @@ import SwiftUI
 import CoreData
 
 protocol StoredDataRepositoryProtocol<Item> {
-    associatedtype Item: Identifiable
-    
-    func fetch(context: NSManagedObjectContext) async
-    func save(context: NSManagedObjectContext) async
+    associatedtype Item: Identifiable    
     func getItems() async -> [Item]
     func addItem(_ item: Item) async
     func removeItem(_ item: Item) async
+    func fetch(context: NSManagedObjectContext) async
+    func save(context: NSManagedObjectContext) async
 }
 
 
 class FavoriteAnimeDataRepository: StoredDataRepositoryProtocol {
-    internal var store: any ContentStorageProtocol<CardModel>
+    private var store: any ContentStorageProtocol<CardModel>
     init() {
         self.store = AnimeCardStore()
     }
