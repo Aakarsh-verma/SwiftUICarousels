@@ -157,7 +157,7 @@ struct AnimeDetailView: View {
     }
     
     var ratingView: some View {
-        RatingCapsule(rating: content.rating, borderColor: .gray)
+        RatingCapsule(content.getRatingConfig())
     }
     
     var reviewView: some View {

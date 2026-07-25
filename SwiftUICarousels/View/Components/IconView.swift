@@ -36,11 +36,12 @@ struct IconView: View {
                         view.foregroundStyle(model.color)
                     })
             }
-            .radialTapGesture {
+            .onTapGesture {
                 interaction.toggle()
                 model.tapAction?()
             }
             .symbolEffect(.bounce.byLayer.down, value: interaction)
+            .glassEffectIfCan()
     }
 }
 
@@ -49,7 +50,7 @@ struct IconView: View {
     let model = IconModel(
         name: "heart",
         type: .primary,
-        size: .Regular,
+        size: .Small,
         color: .black,
         bgColor: .white,
         tapAction: {

@@ -62,3 +62,15 @@ extension Identifiable {
         return nil
     }
 }
+
+extension View {
+    @ViewBuilder
+    func glassEffectIfCan() -> some View {
+        if #available(iOS 26.0, *) {
+            self
+                .glassEffect(.clear)
+        } else {
+            self
+        }
+    }
+}

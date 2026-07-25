@@ -98,7 +98,7 @@ struct GridCard: View {
                 .multilineTextAlignment(.leading)
                 .foregroundColor(.white)
             
-            RatingCapsule(rating: content.rating, showBorder: false)
+            RatingCapsule(content.getRatingConfig(showBorder: false))
                 .padding(.leading, -8)
         }
         

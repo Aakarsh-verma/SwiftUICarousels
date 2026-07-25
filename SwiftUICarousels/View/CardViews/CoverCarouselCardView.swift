@@ -24,22 +24,20 @@ struct CoverCarouselCardView: View {
                     gradientView
                 }
             
-            VStack {
-                HStack {
-                    Spacer()
-                    favoriteIcon()
-                }
+            VStack(alignment: .trailing) {
+                favoriteIcon
+                    .padding(8)
                 Spacer()
             }
+            .frame(maxWidth: .infinity, alignment: .trailing)
             
             VStack(alignment: .leading) {
                 Spacer()
                 VStack(alignment: .leading) {
                     textView()
                 }
+                .padding([.leading, .bottom])
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.leading, 20)
-                .padding(.bottom, 32)
             }
         }
         .frame(width: dimensions.width, height: dimensions.height)
@@ -68,44 +66,46 @@ struct CoverCarouselCardView: View {
         .clipShape(.rect(cornerRadius: 20))
     }
     
-    @ViewBuilder
-    private func favoriteIcon() -> some View {
+    private var favoriteIcon: some View {
         let iconModel = IconModel(
             name: "heart",
             type: .secondary,
-            size: .Regular,
+            size: .Small,
             color: .white,
             bgColor: .clear,
             tapAction: {
                 content.isFavorite.toggle()
                 isFavorite = content.isFavorite
             })
-        IconView(with: iconModel, isFilled: $isFavorite)
-            .padding(.top)
-            .padding(.trailing, 24)
+        return IconView(with: iconModel, isFilled: $isFavorite)
     }
     
     @ViewBuilder
     private func textView() -> some View {
-        Text(content.season)
-            .font(.system(size: UIFont.preferredFont(forTextStyle: .caption1).pointSize * fontScale, weight: .bold))
-            .foregroundColor(.white.opacity(0.85))
-        
-        Text(content.title)
-            .font(.system(size: UIFont.preferredFont(forTextStyle: .title2).pointSize, weight: .bold))
-            .lineLimit(2)
-            .truncationMode(.tail)
-            .multilineTextAlignment(.leading)
-            .foregroundColor(.white)
-        
-        HStack(spacing: 5) {
-            RatingCapsule(rating: content.rating)
+        LazyVStack(alignment: .leading, spacing: 4) { 
+            Text(content.season)
+                .font(CTextStyle.caption(fontScale).font)
+                .foregroundColor(.white.opacity(0.85))
             
-            Text("  \(content.review) reviews")
-                .font(.system(size: UIFont.preferredFont(forTextStyle: .subheadline).pointSize))
+            Text(content.title)
+                .font(CTextStyle.title2.font)
+                .lineLimit(2)
+                .truncationMode(.tail)
+                .multilineTextAlignment(.leading)
+                .foregroundColor(.white)
+            
+            ratingAndReviews
+        }
+    }
+    
+    private var ratingAndReviews: some View {
+        HStack(spacing: 4) {
+            RatingCapsule(content.getRatingConfig())
+            
+            Text("\(content.review) reviews")
+                .font(CTextStyle.subHeadline.font)
                 .foregroundColor(.white.opacity(0.8))
         }
-        .padding(.top, -12)
     }
 }
 

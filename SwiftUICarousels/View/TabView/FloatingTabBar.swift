@@ -39,9 +39,10 @@ struct FloatingTabBar<Value: Hashable & FloatingTabProtocol>: View {
                                 .fill(config.activeBackgroundTint.gradient)
                                 .frame(width: 60, height: 60)
                                 .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
+                                .glassEffectIfCan()
                         }
                     }
-                    .radialTapGesture {
+                    .onTapGesture {
                         activeTab = tab
                         toggleSymbolEffect[index].toggle()
                     }
@@ -49,9 +50,9 @@ struct FloatingTabBar<Value: Hashable & FloatingTabProtocol>: View {
         }
         .padding(.horizontal)
         .frame(height: 80)
-        .background(tabBarBackground)
         .clipShape(.capsule(style: .continuous))
         .animation(config.tabAnimation, value: activeTab)
+        .glassEffectIfCan()
     }
 
     var tabBarBackground: some View {

@@ -15,7 +15,7 @@ struct CardModel: Identifiable,
     var image: CustomImageModel = CustomImageModel(for: "m5")
     var season: String = "Brazil"
     var title: String = "Rio de Janeiro"
-    var rating: String = "5.0"
+    var rating: String = "7.5"
     var review: String = "143"
     var episodes: String = "12"
     var status: String = "Finished"
@@ -24,5 +24,14 @@ struct CardModel: Identifiable,
     
     func getPreviewData() -> PreviewDataModel? {
         return .init(image: image, title: title, description: description)
+    }
+    
+    func getRatingConfig(color: Color = .white, 
+                         showBorder: Bool = true,
+                         borderColor: Color = .gray) -> RatingConfig {
+        return .init(color: color,
+                     rating: self.rating,
+                     showBorder: showBorder,
+                     borderColor: borderColor)
     }
 }
