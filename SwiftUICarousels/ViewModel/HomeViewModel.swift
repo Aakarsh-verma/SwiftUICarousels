@@ -31,7 +31,7 @@ class HomeViewModel: ObservableObject {
     @MainActor
     func fetchAnimeContent(_ season: AnimeSeasonContext = (year: "2014", season: .spring)) async {
         let contentType: APIRouter = .season(season)
-        self.animeCards = await animeRepository.getAnimeCards(contentType)
+        self.animeCards = await animeRepository.loadInitialContent(for: contentType)
         self.animeImages = animeRepository.animeImages
     }
 }

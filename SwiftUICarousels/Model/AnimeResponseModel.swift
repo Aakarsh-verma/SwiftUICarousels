@@ -195,9 +195,16 @@ struct AnimeImage: Decodable, Encodable {
 struct Pagination: Decodable, Encodable {
     var previousURL: String?
     var nextURL: String?
+    var hasNextPage: Bool
 
     private enum CodingKeys: String, CodingKey {
         case previousURL = "previous"
         case nextURL = "next"
+    }
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        previousURL = try container.decodeIfPresent(String.self, forKey: .previousURL)
+        nextURL = try container.decodeIfPresent(String.self, forKey: .nextURL)
+        hasNextPage = (nextURL != nil)
     }
 }

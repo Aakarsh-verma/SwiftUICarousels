@@ -10,6 +10,7 @@ import Foundation
 protocol DataSourceRepositoryProtocol {
     associatedtype Content: Decodable
     func getData(_ router: APIRouter) async -> Content?
+    func getMoreData(_ url: String) async -> Content?
 }
 
 class AnimeDataSourceRepository: DataSourceRepositoryProtocol {
@@ -33,6 +34,21 @@ class AnimeDataSourceRepository: DataSourceRepositoryProtocol {
                 await cache.setContent(data, for: routerKey)
             }
             return data
+        } catch {
+            CustomLogger.shared.debugLog("AnimeDataSourceRepository Failed to fetch data: \(error)")
+            return nil
+        }
+    }
+    
+    func getMoreData(_ paginationURL: String) async -> AnimeResponseModel? {
+        guard let url = URL(string: paginationURL) else {
+            CustomLogger.shared.debugLog(NetworkError.urlError(.init(.badURL)).localizedDescription)
+            return nil
+        }
+        let router = APIRouter.pagination(url: url)
+        do {
+            let newData: AnimeResponseModel? = try await service.request(router)
+            return newData
         } catch {
             CustomLogger.shared.debugLog("AnimeDataSourceRepository Failed to fetch data: \(error)")
             return nil

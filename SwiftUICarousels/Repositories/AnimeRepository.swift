@@ -7,31 +7,47 @@
 
 import SwiftUI
 
-protocol AnimeRepositoryProtocol {
+protocol AnimeRepositoryProtocol: PaginatorProtocol where T == CardModel, P == Pagination {
     var favorite: [CardModel] { get set }
     var animeImages: [ImageModel] { get }
-    func getAnimeCards(_ contentType: APIRouter) async -> [CardModel]
 }
 
+extension AnimeRepositoryProtocol {
+    var pagination: Pagination? {
+        return nil
+    }
+}
 
 final class AnimeRepository: AnimeRepositoryProtocol {
     private let favoritesRepository: any StoredDataRepositoryProtocol<CardModel>
     private let datasource: any DataSourceRepositoryProtocol
     var favorite: [CardModel] = []
     var animeImages: [ImageModel] = []
+    var pagination: Pagination? = nil 
     
     init() {
         self.favoritesRepository = AppViewModel.shared.favorites
         self.datasource = AnimeDataSourceRepository()
     }
     
-    func getAnimeCards(_ contentType: APIRouter) async -> [CardModel] {
+    func loadInitialContent(for router: APIRouter) async -> [CardModel] {
         async let favoriteRequest = self.favoritesRepository.getItems()
-        async let animeRequest = datasource.getData(contentType) as? AnimeResponseModel
+        async let animeRequest = datasource.getData(router) as? AnimeResponseModel
         let (favorites, response) = await (favoriteRequest, animeRequest)
+        self.pagination = response?.pagination
         self.favorite = favorites
         self.animeImages = response?.data?.map { ImageModel(image: $0.images?.mediumImageURL ?? "") } ?? []
         return self.configureContentCards(with: response?.data ?? [])
+    }
+    
+    func loadNextPage() async -> [CardModel] {
+        guard let pagination else { return [] }
+        async let animeRequest = datasource.getMoreData(pagination.nextURL ?? "") as? AnimeResponseModel
+        guard let response = await animeRequest else {
+            return []
+        }
+        self.pagination = response.pagination
+        return self.configureContentCards(with: response.data ?? [])
     }
     
     private func configureContentCards(with data: [AnimeData]) -> [CardModel] {
