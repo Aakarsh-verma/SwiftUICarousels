@@ -5,14 +5,15 @@
 //  Created by Aakarsh Verma on 22/07/26.
 //
 
+import Foundation
 
-protocol CacheServiceRepositoryProtocol<Item> {
+protocol CacheServiceRepositoryProtocol<Item>: Actor {
     associatedtype Item: Decodable
     func getContent(for key: String) -> Item?
     func setContent(_ content: Item?, for key: String)
 }
 
-class AnimeCacheService: CacheServiceRepositoryProtocol {
+actor AnimeCacheService: CacheServiceRepositoryProtocol {
     private var storage: [String: AnimeResponseModel] = [:]
 
     func getContent(for key: String) -> AnimeResponseModel? {

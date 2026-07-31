@@ -23,14 +23,14 @@ class AnimeDataSourceRepository: DataSourceRepositoryProtocol {
 
     func getData(_ router: APIRouter) async -> AnimeResponseModel? {
         if let routerKey = router.routerKey, 
-            let data = cache.getContent(for: routerKey) {
+            let data = await cache.getContent(for: routerKey) {
             return data
         }
 
         do {
             let data: AnimeResponseModel? = try await service.request(router)
             if let routerKey = router.routerKey {
-                cache.setContent(data, for: routerKey)
+                await cache.setContent(data, for: routerKey)
             }
             return data
         } catch {

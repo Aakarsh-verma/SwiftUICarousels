@@ -62,3 +62,39 @@ extension Identifiable {
         return nil
     }
 }
+
+extension View {
+    @ViewBuilder
+    func glassEffectIfCan() -> some View {
+        if #available(iOS 26.0, *) {
+            self
+                .glassEffect(.clear)
+        } else {
+            self
+        }
+    }
+    
+    @ViewBuilder
+    func glassBackground<S: Shape>(
+        _ shape: S
+    ) -> some View {
+        modifier(
+            GlassEffectModifier(shape: shape)
+        )
+    }
+}
+
+private struct GlassEffectModifier<S: Shape>: ViewModifier {
+    let shape: S
+
+    @ViewBuilder
+    func body(content: Content) -> some View {
+        if #available(iOS 26.0, *) {
+            content
+                .glassEffect(.regular, in: shape)
+        } else {
+            content
+                .background(.ultraThinMaterial, in: shape)
+        }
+    }
+}

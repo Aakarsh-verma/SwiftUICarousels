@@ -18,7 +18,7 @@ struct HomeView: View {
                 TopHeaderView()
                     .padding(.horizontal)
                 
-                SearchHeaderView(searchText: $searchText, searchForeground: .ultraThick)
+                SearchHeaderView(searchText: $searchText)
                     .padding(.horizontal)
                 
                 ScrollView {

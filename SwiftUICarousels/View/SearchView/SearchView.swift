@@ -19,7 +19,6 @@ struct SearchView: View {
                 TopHeaderView()
                 SearchHeaderView(
                     searchText: $searchText,
-                    searchForeground: .ultraThick,
                     submitAction: {
                         Task(priority: .userInitiated) { 
                             await viewModel.fetchSearchAnimeContent(for: searchText)
@@ -54,7 +53,6 @@ struct SearchView: View {
                 }
             }
             .padding(.horizontal)
-            .background(.gray.quaternary)
             .frame(maxHeight: .infinity)
             .preferredColorScheme(.dark)
             .navigationDestination(for: CardModel.self) { model in
