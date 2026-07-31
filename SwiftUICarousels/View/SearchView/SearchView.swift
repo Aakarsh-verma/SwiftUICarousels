@@ -19,11 +19,7 @@ struct SearchView: View {
                 TopHeaderView()
                 SearchHeaderView(
                     searchText: $searchText,
-                    submitAction: {
-                        Task(priority: .userInitiated) { 
-                            await viewModel.fetchSearchAnimeContent(for: searchText)
-                        }  
-                    }
+                    submitAction: searchAction
                 )
                 
                 FilterHeaderView(filters: $viewModel.filters) { type in
@@ -36,7 +32,7 @@ struct SearchView: View {
                     ) { model in
                         GridCard(path: $path, content: model)
                     }
-
+                    paginationView
                 }
                 .onScrollPhaseChange { oldPhase, newPhase in
                     switch newPhase {
@@ -60,7 +56,34 @@ struct SearchView: View {
             }
         }
         .task {
-            await viewModel.fetchAnimeContent()
+            await viewModel.fetchInitialPage()
+        }
+    }
+
+    private var paginationView: some View {
+        Color.clear
+            .frame(height: 24)
+            .overlay {
+                if viewModel.isLoadingNextPage {
+                    ProgressView()
+                        .padding(.vertical, 24)
+                }
+            }
+            .onScrollVisibilityChange(threshold: 0.5) { isVisible in
+                guard isVisible else { return }
+
+                Task(priority: .userInitiated) {
+                    await viewModel.fetchMoreContent()
+                }
+            }
+    }
+
+    private func searchAction() {
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !query.isEmpty else { return }
+        
+        Task(priority: .userInitiated) {
+            await viewModel.fetchSearchAnimeContent(for: query)
         }
     }
 }

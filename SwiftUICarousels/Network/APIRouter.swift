@@ -46,6 +46,7 @@ enum APIRouter {
     case recommendation
     case search(query: String)
     case filter(sort: SortingOrder, status: AiringStatus)
+    case pagination(url: URL)
 }
 
 extension APIRouter {
@@ -72,6 +73,8 @@ extension APIRouter {
             return "recommendations/anime"
         case .search, .filter:
             return "anime"
+        case .pagination:
+            return ""
         }
     }
     
@@ -87,19 +90,22 @@ extension APIRouter {
         var queryItems = [URLQueryItem]()
         switch self {
         case .season:
-            queryItems.append(URLQueryItem(name: "limit", value: "10"))
+            queryItems.append(URLQueryItem(name: "limit", value: "20"))
 
         case .ranking(let ranking):
             queryItems.append(URLQueryItem(name: "ranking_type", value: ranking.rawValue))
-            queryItems.append(URLQueryItem(name: "limit", value: "10"))
+            queryItems.append(URLQueryItem(name: "limit", value: "20"))
             
         case .search(let query):
             queryItems.append(URLQueryItem(name: "q", value: query))
-            queryItems.append(URLQueryItem(name: "limit", value: "10"))
+            queryItems.append(URLQueryItem(name: "limit", value: "20"))
             
         case .filter(let sort, let status):
             queryItems.append(URLQueryItem(name: "status", value: status.rawValue))
             queryItems.append(URLQueryItem(name: "sort", value: sort.rawValue))
+            
+        case .pagination:
+            return []
             
         default:
             break
@@ -120,6 +126,9 @@ extension APIRouter {
      - Sample cURL:  curl 'https://api.myanimelist.net/v2/anime/ranking?ranking_type=all&limit=4' \
      **/
     func asURLRequest() throws -> URLRequest {
+        if case let .pagination(url) = self {
+            return buildRequest(url)
+        }
         guard var components = URLComponents(string: baseURL + path) else {
             throw URLError(.badURL)
         }
@@ -130,6 +139,10 @@ extension APIRouter {
             throw URLError(.badURL)
         }
         
+        return buildRequest(url)
+    }
+    
+    private func buildRequest(_ url: URL) -> URLRequest {
         var request = URLRequest(url: url)
         headers.forEach { key, value in
             request.setValue(value, forHTTPHeaderField: key)
