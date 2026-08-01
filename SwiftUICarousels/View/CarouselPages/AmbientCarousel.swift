@@ -10,7 +10,7 @@ import SwiftUI
 struct AmbientCarousel: View {
     @State var topInset: CGFloat = 0
     @State var scrollOffsetY: CGFloat = 0
-    @StateObject var viewModel = HomeViewModel()
+    @State var viewModel = HomeViewModel()
     
     var body: some View {
         ScrollView(.vertical) {
@@ -44,5 +44,4 @@ struct AmbientCarousel: View {
 
 #Preview {
     AmbientCarousel()
-        .environmentObject(HomeViewModel())
 }

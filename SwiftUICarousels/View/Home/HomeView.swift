@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var searchText: String = ""
-    @StateObject private var viewModel = HomeViewModel()
+    @State private var viewModel = HomeViewModel()
     @State private var path = NavigationPath()
 
     var body: some View {
@@ -24,10 +24,10 @@ struct HomeView: View {
                 ScrollView {
                     VStack(alignment: .leading) {
                         ForEach(viewModel.dashboardWidgets) { widget in
-                            HomeWidgetView(item: widget, path: $path)
+                            HomeWidgetView(viewModel: $viewModel, 
+                                           item: widget, path: $path)
                         }
                     }
-                    .environmentObject(viewModel)
                 }
             }
             .background(.gray.quaternary)

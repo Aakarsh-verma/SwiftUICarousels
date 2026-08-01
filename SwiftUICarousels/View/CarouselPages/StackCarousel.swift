@@ -9,7 +9,7 @@ import SwiftUI
 
 struct StackCarousel: View {
     @State private var currentIndex = 0
-    @StateObject var viewModel = HomeViewModel()
+    @State var viewModel = HomeViewModel()
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeWidgetView: View {
+    @Binding var viewModel: HomeViewModel
     var item: CarouselWidgetModel
     @Binding var path: NavigationPath
     
@@ -21,7 +22,8 @@ struct HomeWidgetView: View {
             Button {
                 path.append(item.viewType.rawValue)
             } label: {
-                WidgetManagerView(path: $path, item: item)
+                WidgetManagerView(viewModel: $viewModel, 
+                                  path: $path, item: item)
                     .cornerRadius(12)
                     .shadow(radius: 5)
             }
@@ -33,9 +35,7 @@ struct HomeWidgetView: View {
 }
 
 #Preview {
-    @Previewable @StateObject var viewModel = HomeViewModel()
     let model = CarouselWidgetModel(title: "Ambient", viewType: .ambient, dataType: .imageModel)
     
-    HomeWidgetView(item: model, path: .constant(.init()))
-        .environmentObject(viewModel)
+    HomeWidgetView(viewModel: .constant(.init()), item: model, path: .constant(.init()))
 }

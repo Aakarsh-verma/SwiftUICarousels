@@ -10,7 +10,7 @@ import SwiftUI
 
 struct CoverCarousel: View {
     @State private var activeID: UUID?
-    @StateObject var viewModel = HomeViewModel()
+    @State var viewModel = HomeViewModel()
 
     var body: some View {
         VStack {

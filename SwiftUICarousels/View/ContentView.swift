@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var viewModel = HomeViewModel()
+    @State private var viewModel = HomeViewModel()
     @State private var path = NavigationPath()
     
     var body: some View {
@@ -27,10 +27,11 @@ struct ContentView: View {
                     VStack(alignment: .leading) {
                         ForEach(viewModel.homeWidgets) { widget in
                             HomeWidgetView(
+                                viewModel: $viewModel,
                                 item: widget,
                                 path: $path
                             )
-                            .environmentObject(viewModel)
+                            .environment(viewModel)
                         }
                     }
                 }
