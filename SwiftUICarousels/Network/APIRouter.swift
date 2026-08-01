@@ -14,6 +14,36 @@ enum AnimeSeason: String {
     case winter
 }
 
+extension AnimeSeason {
+    static func current(from date: Date = .now) -> AnimeSeason {
+        let month = Calendar.current.component(.month, from: date)
+        
+        switch month {
+        case 1...3:
+            return .winter
+            
+        case 4...6:
+            return .spring
+            
+        case 7...9:
+            return .summer
+            
+        default:
+            return .autumn
+        }
+    }
+    
+    static var currentContext: AnimeSeasonContext {
+        let calendar = Calendar.current
+        let date = Date()
+
+        return AnimeSeasonContext(
+            year: String(calendar.component(.year, from: date)),
+            season: current()
+        )
+    }
+}
+
 enum SortingOrder: String {
     case desc 
     case asc 
@@ -39,6 +69,14 @@ enum AnimeRanking: String {
 
 typealias AnimeSeasonContext = (year: String, season: AnimeSeason)
 
+public enum HTTPMethod: String {
+    case get = "GET"
+    case post = "POST"
+    case put = "PUT"
+    case patch = "PATCH"
+    case delete = "DELETE"
+}
+
 enum APIRouter {
     case seasonNow
     case season(AnimeSeasonContext)
@@ -50,6 +88,15 @@ enum APIRouter {
 }
 
 extension APIRouter {
+    private var completeURL: URL? {
+        switch self {
+        case .pagination(let url):
+            return url
+        default:
+            return nil
+        }
+    }
+    
     private var baseURL: String {
         return "https://api.myanimelist.net/v2/"
     }
@@ -64,7 +111,8 @@ extension APIRouter {
     private var path: String {
         switch self {
         case .seasonNow:
-            return "seasons/now"
+            let context = AnimeSeason.currentContext
+            return "anime/season/\(context.year)/\(context.season.rawValue)"
         case .season(let context):
             return "anime/season/\(context.year)/\(context.season.rawValue)"
         case .ranking:
@@ -78,8 +126,8 @@ extension APIRouter {
         }
     }
     
-    private var method: String {
-        return "GET"
+    private var method: HTTPMethod {
+        return .get
     }
     
     private var dataFields: String {
@@ -126,19 +174,14 @@ extension APIRouter {
      - Sample cURL:  curl 'https://api.myanimelist.net/v2/anime/ranking?ranking_type=all&limit=4' \
      **/
     func asURLRequest() throws -> URLRequest {
-        if case let .pagination(url) = self {
-            return buildRequest(url)
-        }
+        if let url = self.completeURL {  return buildRequest(url) }
+        
         guard var components = URLComponents(string: baseURL + path) else {
             throw URLError(.badURL)
         }
         
         components.queryItems = queryParams
-        
-        guard let url = components.url else {
-            throw URLError(.badURL)
-        }
-        
+        guard let url = components.url else { throw URLError(.badURL) }
         return buildRequest(url)
     }
     
@@ -147,7 +190,7 @@ extension APIRouter {
         headers.forEach { key, value in
             request.setValue(value, forHTTPHeaderField: key)
         }
-        request.httpMethod = method
+        request.httpMethod = method.rawValue
         return request
     }
 }

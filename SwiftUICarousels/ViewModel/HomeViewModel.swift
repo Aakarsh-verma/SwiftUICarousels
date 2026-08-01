@@ -7,25 +7,26 @@
 
 import SwiftUI
 
-class HomeViewModel: ObservableObject {
-    @Published var homeWidgets: [CarouselWidgetModel] = [
+@Observable
+class HomeViewModel {
+    var homeWidgets: [CarouselWidgetModel] = [
         .init(title: "Cover Carousel", viewType: .cover),
         .init(title: "Stack Carousel", viewType: .stack),
         .init(title: "Parallax Carousel", viewType: .parallax),
         .init(title: "Ambient Carousel", viewType: .ambient)
     ]
     
-    @Published var dashboardWidgets: [CarouselWidgetModel] = [
+    var dashboardWidgets: [CarouselWidgetModel] = [
         .init(title: "Stack Carousel", viewType: .stack, dataType: .cardModel),
     ]
     
-    @Published var animeImages = [ImageModel]()
-    @Published var animeCards: [CardModel] = []
+    var animeImages = [ImageModel]()
+    var animeCards: [CardModel] = []
     
-    private let animeRepository: AnimeRepositoryProtocol
+    private let animeRepository: any AnimeRepositoryProtocol
     
-    init() {
-        self.animeRepository = AnimeRepository()
+    init(_ animeRepository: any AnimeRepositoryProtocol = AnimeRepository()) {
+        self.animeRepository = animeRepository
     }
     
     @MainActor

@@ -37,12 +37,12 @@ class SearchViewModel: ObservableObject {
             )
         ),
     ]
-    @ObservationIgnored private let animeRepository: AnimeRepositoryProtocol
+    @ObservationIgnored private let animeRepository: any AnimeRepositoryProtocol
     @ObservationIgnored private var initialPageloaded: Bool = false
     var isLoadingNextPage: Bool = false
     
-    init() {
-        self.animeRepository = AnimeRepository()
+    init(_ animeRepository: any AnimeRepositoryProtocol = AnimeRepository()) {
+        self.animeRepository = animeRepository
     }
     
     @MainActor
