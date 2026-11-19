@@ -10,7 +10,7 @@ import CoreData
 
 struct FavoritesView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @StateObject private var viewModel = FavoritesViewModel()
+    @State private var viewModel = FavoritesViewModel()
     @State private var path = NavigationPath()
     
     var body: some View {

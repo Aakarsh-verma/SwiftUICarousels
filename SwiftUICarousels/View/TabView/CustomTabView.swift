@@ -11,7 +11,7 @@ struct CustomTabView: View {
     @State var tabBarItems: [TabBarItem] = [.home, .search, .favorites, .profile]
     @State var activeTab: TabBarItem = .home
     @State private var hideTabBar: Bool = false
-    @StateObject private var overlay = OverlayCoordinator()
+    @State private var overlay = OverlayCoordinator()
 
     var body: some View {
         FloatingTabView(selection: $activeTab, tabItems: $tabBarItems, hideTabBar: $hideTabBar) { tabBarItem, tabHeight in
@@ -26,7 +26,7 @@ struct CustomTabView: View {
                 ContentView()
             }
         }
-        .environmentObject(overlay)
+        .environment(overlay)
         .overlay {
             if overlay.isPresented, let content = overlay.content {
                 content

@@ -8,8 +8,9 @@
 import SwiftUI
 import CoreData
 
-class FavoritesViewModel: ObservableObject {
-    @Published var animeCards: [CardModel] = []
+@Observable
+class FavoritesViewModel {
+    var animeCards: [CardModel] = []
     
     func fetchFavorites() async {
         let favorites = AppViewModel.shared.favorites

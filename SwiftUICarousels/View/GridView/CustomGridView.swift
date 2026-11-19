@@ -21,7 +21,7 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
     }
     
     @Namespace private var peekNS
-    @EnvironmentObject private var overlay: OverlayCoordinator
+    @Environment(OverlayCoordinator.self) private var overlay: OverlayCoordinator
     @State private var peekItem: CardPreviewContent?
     @State private var showPeek = false
     
@@ -130,7 +130,7 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
 }
 
 #Preview {
-    @Previewable @StateObject var overlay = OverlayCoordinator()
+    @Previewable @State var overlay = OverlayCoordinator()
     ScrollView {
         CustomGridView(items: sampleImages) { imageModel in
             CustomImageView(CustomImageModel(for: imageModel.image))
@@ -139,7 +139,7 @@ struct CustomGridView<Data: RandomAccessCollection, Content: View>: View where D
             
         } action: {_ in}
             .padding(.horizontal)
-            .environmentObject(overlay)
+            .environment(overlay)
             .overlay {
                 if overlay.isPresented, let content = overlay.content {
                     content

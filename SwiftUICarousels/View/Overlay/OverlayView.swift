@@ -7,10 +7,11 @@
 
 import SwiftUI
 
-final class OverlayCoordinator: ObservableObject {
-    @Published var isPresented: Bool = false
-    @Published var content: AnyView? = nil
-    @Published var isScreenTapped: Bool = false
+@Observable
+final class OverlayCoordinator {
+    var isPresented: Bool = false
+    var content: AnyView? = nil
+    var isScreenTapped: Bool = false
 
     func show<V: View>(_ view: V) {
         content = AnyView(view)

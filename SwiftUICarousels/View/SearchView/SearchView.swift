@@ -8,10 +8,16 @@
 import SwiftUI
 
 struct SearchView: View {
-    @StateObject private var viewModel = SearchViewModel()
+    @State private var viewModel: SearchViewModelProtocol
     @State private var path = NavigationPath()
     @State private var searchText: String = ""
     @Binding var hideTabBar: Bool 
+    
+    init(viewModel: SearchViewModelProtocol = SearchViewModel(), 
+         hideTabBar: Binding<Bool>) {
+        self.viewModel = viewModel
+        self._hideTabBar = hideTabBar
+    }
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -51,6 +57,7 @@ struct SearchView: View {
             .padding(.horizontal)
             .frame(maxHeight: .infinity)
             .preferredColorScheme(.dark)
+            .background(Image(SCImages.spaceBg.rawValue))
             .navigationDestination(for: CardModel.self) { model in
                 AnimeDetailView(content: model)
             }
@@ -89,5 +96,7 @@ struct SearchView: View {
 }
 
 #Preview {
+    @Previewable @State var overlay = OverlayCoordinator()
     SearchView(hideTabBar: .constant(true))
+        .environment(overlay)
 }

@@ -8,8 +8,18 @@
 import SwiftUI
 import Observation
 
+protocol SearchViewModelProtocol: AnyObject {
+    var animeCards: [CardModel] { get set }
+    var filters: [FilterTabsModel] { get set }
+    var isLoadingNextPage: Bool { get set }
+    func fetchInitialPage() async
+    func fetchMoreContent() async
+    func fetchSearchAnimeContent(for query: String) async
+    func fetchFilterAnimeContent(for status: AiringStatus, by order: SortingOrder) async
+}
+
 @Observable
-class SearchViewModel: ObservableObject {
+class SearchViewModel: SearchViewModelProtocol {
     var animeCards: [CardModel] = []
     var filters: [FilterTabsModel] = [
         .init(
