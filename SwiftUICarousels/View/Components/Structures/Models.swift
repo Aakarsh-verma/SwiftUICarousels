@@ -50,14 +50,14 @@ struct IconModel {
     let bgColor: Color
     var tapAction: ActionCallback?
     
-    init(name: String,
+    init(name: SCImages,
          type: ComponentType = .primary,
          size: ComponentDimension? = nil,
          color: Color? = nil,
          style: AnyShapeStyle? = nil,
          bgColor: Color? = nil,
          tapAction: ActionCallback? = nil) {
-        self.name = name
+        self.name = name.rawValue
         self.type = type
         self.size = size ?? .Regular
         self.color = color ?? .black

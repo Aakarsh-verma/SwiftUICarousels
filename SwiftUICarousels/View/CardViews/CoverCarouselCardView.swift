@@ -68,7 +68,7 @@ struct CoverCarouselCardView: View {
     
     private var favoriteIcon: some View {
         let iconModel = IconModel(
-            name: "heart",
+            name: .favorite,
             type: .secondary,
             size: .Small,
             color: .white,

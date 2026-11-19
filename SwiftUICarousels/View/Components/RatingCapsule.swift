@@ -33,7 +33,7 @@ struct RatingCapsule: View {
         
     var body: some View {
         HStack(spacing: 2) {
-            Image(systemName: "star.fill")
+            Image(systemName: SCImages.rating.rawValue)
                 .font(CTextStyle.subHeadline2.font)
             
             Text(config.rating)

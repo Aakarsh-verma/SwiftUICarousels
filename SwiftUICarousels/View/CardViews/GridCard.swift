@@ -71,7 +71,7 @@ struct GridCard: View {
     @ViewBuilder
     private func favoriteIcon() -> some View {
         let iconModel = IconModel(
-            name: "heart",
+            name: .favorite,
             type: .tertiary,
             size: .Regular,
             color: .white,

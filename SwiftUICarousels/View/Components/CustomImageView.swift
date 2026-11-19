@@ -21,7 +21,7 @@ struct CustomImageView: View {
         if imageModel.isRemoteImage {
             KFImage(URL(string: imageModel.image)!)
                 .placeholder {
-                    Image(systemName: "photo.fill")
+                    Image(systemName: SCImages.placeholder.rawValue)
                         .foregroundColor(.gray)
                 }
                 .resizable()

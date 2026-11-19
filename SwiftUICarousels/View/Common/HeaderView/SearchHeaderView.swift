@@ -19,7 +19,7 @@ struct SearchHeaderView: View {
     func searchHeaderView() -> some View {
         HStack(spacing: 12) {
             HStack(spacing: 12) {
-                Image(systemName: "magnifyingglass")
+                Image(systemName: SCImages.search.rawValue)
                     .foregroundStyle(.gray)
                 
                 TextField("Search", text: $searchText)
@@ -30,7 +30,7 @@ struct SearchHeaderView: View {
                 Button {
                     //
                 } label: {
-                    Image(systemName: "slider.horizontal.3")
+                    Image(systemName: SCImages.filter.rawValue)
                         .font(.title2)
                         .foregroundStyle(.gray)
                 }

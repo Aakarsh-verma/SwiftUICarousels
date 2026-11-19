@@ -48,7 +48,7 @@ struct IconView: View {
 #Preview {
     @Previewable @State var status = false
     let model = IconModel(
-        name: "heart",
+        name: .favorite,
         type: .primary,
         size: .Small,
         color: .black,

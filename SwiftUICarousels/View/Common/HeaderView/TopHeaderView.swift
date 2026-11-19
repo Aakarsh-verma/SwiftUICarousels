@@ -26,7 +26,7 @@ struct TopHeaderView: View {
             
             Spacer()
             
-            Image(systemName: "person.circle.fill")
+            Image(systemName: SCImages.account.rawValue)
                 .font(.largeTitle)
                 .foregroundStyle(.gray)
         }
