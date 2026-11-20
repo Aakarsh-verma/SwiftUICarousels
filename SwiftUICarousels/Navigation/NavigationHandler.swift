@@ -13,6 +13,7 @@ enum CarouselPageEnum: String {
     case ambient
     case parallax
     case stack
+    case menu
 }
 
 class NavigationHandler {
@@ -31,6 +32,9 @@ class NavigationHandler {
         case .ambient: AmbientCarousel()
         case .parallax: ParallaxCarousel()
         case .stack: StackCarousel()
+        case .menu: 
+            MenuView()
+                .preferredColorScheme(.dark)
         default: ContentView()
         }
     }

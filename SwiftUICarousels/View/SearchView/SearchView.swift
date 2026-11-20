@@ -22,7 +22,7 @@ struct SearchView: View {
     var body: some View {
         NavigationStack(path: $path) {
             VStack {
-                TopHeaderView()
+                TopHeaderView(path: $path)
                 SearchHeaderView(
                     searchText: $searchText,
                     submitAction: searchAction
@@ -60,6 +60,11 @@ struct SearchView: View {
             .background(Image(SCImages.spaceBg.rawValue))
             .navigationDestination(for: CardModel.self) { model in
                 AnimeDetailView(content: model)
+            }
+            .navigationDestination(for: String.self) { route in
+                withAnimation(.interactiveSpring(response: 0.2, dampingFraction: 0.7, blendDuration: 0.7)) {
+                    NavigationHandler.shared.performNavigation(route)
+                }
             }
         }
         .task {
