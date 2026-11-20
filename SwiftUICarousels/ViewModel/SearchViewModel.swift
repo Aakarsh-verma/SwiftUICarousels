@@ -25,7 +25,7 @@ class SearchViewModel: SearchViewModelProtocol {
         .init(
             item: .init(
                 text: "Reverse",
-                leftImage: "slider.horizontal.3",
+                leftImage: "",
                 color: .white,
                 secondaryColor: .black,
                 borderType: .roundRect(
@@ -37,7 +37,7 @@ class SearchViewModel: SearchViewModelProtocol {
         .init(
             item: .init(
                 text: "Airing",
-                leftImage: "slider.horizontal.3",
+                leftImage: "",
                 color: .white,
                 secondaryColor: .black,
                 borderType: .roundRect(

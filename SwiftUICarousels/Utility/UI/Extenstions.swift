@@ -46,6 +46,19 @@ extension View {
         }
     }
     
+    @ViewBuilder
+    func applyIfElse<Content: View, ElseContent: View>(
+        _ condition: Bool,
+        modifier: (Self) -> Content,
+        else elseModifier: (Self) -> ElseContent
+    ) -> some View {
+        if condition {
+            modifier(self)
+        } else {
+            elseModifier(self)
+        }
+    }
+    
     func onGlobalAppTouch(_ action: @escaping (_ phase: UITouch.Phase, _ location: CGPoint) -> Void) -> some View {
         self.background(GlobalTouchWindowObserver(onTouch: action))
     }

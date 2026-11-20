@@ -86,6 +86,8 @@ struct FilterTab: View {
             isSelected.toggle()
         } label: {
             Label(item.text, systemImage: item.leftImage)
+                .font(.title3)
+                .labelStyle(.automatic)
                 .padding(6)
                 .foregroundColor(isSelected ? item.secondaryColor : item.color)
                 .background(isSelected ? item.color : .clear)

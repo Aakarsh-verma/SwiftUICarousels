@@ -23,8 +23,10 @@ struct IconView: View {
     var body: some View {
         Circle()
             .fill(model.bgColor)
-            .applyIf(model.type != .tertiary, modifier: { 
+            .applyIfElse(model.type != .tertiary, modifier: { 
                 $0.stroke(model.color.secondary, style: .init(lineWidth: 2))
+            }, else: {
+                $0.stroke(.clear, style: .init(lineWidth: 0))
             })
             .frame(width: frameLength, height: frameLength)
             .overlay {
